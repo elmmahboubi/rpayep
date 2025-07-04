@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
-import { getProducts, getFeaturedProducts } from './api/products';
+import { getProducts, getFeaturedProducts, getProductBySlug } from './api/products';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
 import fs from 'fs';
@@ -27,13 +27,18 @@ export async function render(url: string) {
     if (url.startsWith('/products/')) {
       let slug = url.split('/products/')[1];
       slug = slug.replace(/\/$/, ''); // Remove trailing slash if present
-      const productJsonPath = path.resolve(process.cwd(), 'src/products', slug, 'product.json');
-      try {
-        const productJson = fs.readFileSync(productJsonPath, 'utf-8');
-        product = JSON.parse(productJson);
+      const product = await getProductBySlug(slug);
+      if (!product) {
+        console.error('SSR: Product not found for slug:', slug);
+        // Set 404 meta and fallback content
+        headHtml = `
+          <title>Product Not Found - HappyDeel</title>
+          <meta name="description" content="Sorry, this product could not be found.">
+          <meta name="robots" content="noindex">
+        `;
+        initialData = { product: null };
+      } else {
         initialData = { product };
-      } catch (e) {
-        product = null;
       }
     } else if (url === '/' || url === '') {
       const [products, featured] = await Promise.all([getProducts(), getFeaturedProducts()]);
