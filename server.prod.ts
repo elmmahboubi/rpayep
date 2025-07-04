@@ -36,15 +36,42 @@ async function createProdServer() {
 
       res.status(statusCode || 200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (error: any) {
-      console.error(error);
-      res.status(500).send(error.stack);
+      console.error('SSR Error:', error);
+      // Return a fallback HTML instead of crashing
+      res.status(500).send(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>HappyDeel - Something went wrong</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+          </head>
+          <body>
+            <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+              <div style="text-align: center;">
+                <h1>Something went wrong</h1>
+                <p>Please try again later.</p>
+                <a href="/" style="color: #0070f3; text-decoration: none;">Go back home</a>
+              </div>
+            </div>
+          </body>
+        </html>
+      `);
     }
   });
 
-  const port = process.env.PORT || 4173;
-  app.listen(port, () => {
-    console.log(`Production server running at http://localhost:${port}`);
+  return app;
+}
+
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  createProdServer().then(app => {
+    const port = process.env.PORT || 4173;
+    app.listen(port, () => {
+      console.log(`Production server running at http://localhost:${port}`);
+    });
   });
 }
 
-createProdServer(); 
+// For Vercel deployment
+export default createProdServer; 
