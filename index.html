@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" class="hydration-loading">
+  <head>
+    <!-- The server will inject dynamic title, meta, etc. here -->
+    <!--ssr-head-outlet-->
+    
+    <!-- Static tags remain here -->
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <!-- These will be replaced by the server-injected ones, but are good fallbacks -->
+    <title>HappyDeel - Where Savings Make You Smile.</title>
+    <meta name="description" content="Discover premium cameras and photography equipment at HappyDeel. Shop the latest DSLR, mirrorless, and compact cameras from top brands.">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/logosvg.svg" as="image" type="image/svg+xml">
+    <link rel="preload" href="https://db.onlinewebfonts.com/t/f394894fe9d2c0473c80ab24dd9bcda5.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Critical CSS for FOUC prevention -->
+    <style>
+      /* Critical styles to prevent FOUC */
+      .hydration-loading {
+        visibility: hidden;
+      }
+      
+      .hydration-loading .hydration-fallback {
+        visibility: visible;
+      }
+      
+      .hydration-complete {
+        visibility: visible;
+      }
+      
+      /* Loading spinner for hydration fallback */
+      .hydration-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 48px;
+        height: 48px;
+        border: 2px solid #e5e7eb;
+        border-top: 2px solid #0046be;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+      }
+      
+      @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      
+      /* Ensure body doesn't show scrollbars during loading */
+      .hydration-loading body {
+        overflow: hidden;
+      }
+      
+      .hydration-complete body {
+        overflow: visible;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJK37ZS"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  
+    <!-- Hydration fallback - visible during loading -->
+    <div class="hydration-fallback">
+      <div class="hydration-spinner"></div>
+    </div>
+    
+    <!-- Main app container - server will inject rendered HTML here -->
+    <div id="root"><!--ssr-outlet--></div>
+    
+    <!-- Server will inject initial data here -->
+    <!--initial-data-->
+    <!-- CORRECT: Points to entry-client.tsx for SSR hydration -->
+    <script type="module" src="/src/entry-client.tsx"></script>
+    <!--ssr-script-outlet-->
+  </body>
+</html>
