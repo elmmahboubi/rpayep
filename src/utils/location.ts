@@ -6,33 +6,6 @@ export interface LocationInfo {
 }
 
 export async function getUserLocation(): Promise<LocationInfo> {
-  // Try multiple location detection methods in order of preference
-  
-  // Method 1: Try ipapi.co (free, no API key required)
-  try {
-    const response = await fetch('https://ipapi.co/json/', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
-    
-    if (response.ok) {
-      const data = await response.json();
-      
-      if (data.country_name && data.country_code && !data.error) {
-        return {
-          country: data.country_name,
-          countryCode: data.country_code.toUpperCase(),
-          city: data.city,
-          region: data.region
-        };
-      }
-    }
-  } catch (error) {
-    console.warn('ipapi.co failed:', error);
-  }
-
   // Method 2: Try ip-api.com (free, no API key required)
   try {
     const response = await fetch('http://ip-api.com/json/', {
