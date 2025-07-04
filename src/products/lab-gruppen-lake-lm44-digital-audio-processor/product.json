@@ -4,6 +4,8 @@
   "price": 1875.00,
   "rating": 4.7,
   "reviewCount": 12,
+  "inStock": true,
+  "slug": "lab-gruppen-lake-lm44-digital-audio-processor",
   "images": [
     "/products/lab-gruppen-lake-lm44-digital-audio-processor/img1.webp",
     "/products/lab-gruppen-lake-lm44-digital-audio-processor/img2.webp",

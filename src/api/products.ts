@@ -6,11 +6,13 @@ const productModules = import.meta.glob('../products/*/product.json', {
   import: 'default'
 });
 const allProducts: Product[] = Object.entries(productModules).map(([path, module]) => {
-  const slug = path.split('/')[2];
+  const folderSlug = path.split('/')[2];
+  const productData = module as any;
+  
   return {
-    id: slug,
-    slug,
-    ...(module as any)
+    id: productData.slug || folderSlug,
+    slug: productData.slug || folderSlug, // Use slug from JSON, fallback to folder name
+    ...productData
   };
 });
 

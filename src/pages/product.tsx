@@ -19,6 +19,14 @@ interface ProductPageProps {
   };
 }
 
+// Create a simple Not Found component
+const ProductNotFound = () => (
+  <div className="text-center py-20">
+    <h1 className="text-4xl font-bold mb-4">404 - Product Not Found</h1>
+    <p>Sorry, we couldn't find the product you're looking for.</p>
+  </div>
+);
+
 const ProductPage: React.FC<ProductPageProps> = ({ initialData = {} }) => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -209,21 +217,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialData = {} }) => {
     );
   }
   
-  if (!product) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
-            <Link to="/" className="text-[#0046be] hover:text-[#003494]">
-              Back to Home
-            </Link>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
+  if (product === null) {
+    return <ProductNotFound />;
   }
   
   const { title, description, price, images, condition, reviews } = product;

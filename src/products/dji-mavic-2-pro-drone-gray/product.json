@@ -4,6 +4,8 @@
   "price": 336,
   "rating": 4.8,
   "reviewCount": 2,
+  "inStock": true,
+  "slug": "dji-mavic-2-pro-drone-gray",
   "images": [
     "/products/dji-mavic-2-pro-drone-gray/img1.webp",
     "/products/dji-mavic-2-pro-drone-gray/img2.webp",

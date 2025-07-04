@@ -8,9 +8,11 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "allowJs": true,
 
     /* Linting */
     "strict": true,
@@ -19,9 +21,13 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "vite.config.ts",
-    "src/server.js",
+    "vite.config.client.ts",
+    "vite.config.ssr.ts",
+    "server.dev.ts",
+    "server.prod.ts",
+    "api/index.ts",
     "src/entry-server.tsx",
-    "api/index.js"
+    "postcss.config.js",
+    "tailwind.config.js"
   ]
 }

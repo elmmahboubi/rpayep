@@ -1,9 +1,11 @@
 {
   "title": "Dyson Airstrait Hair Straightener Ceramic Pink Rose",
-  "description": "Dyson Airstrait Hair Straightener in Ceramic Pink Rose Gold. Sleek design for smooth, shiny hair with advanced technology. Condition: Used. See images for more details.",
-  "price": 166.50,
-  "rating": 4.6,
-  "reviewCount": 25,
+  "description": "Experience salon-quality hair styling with the Dyson Airstrait Hair Straightener in Ceramic Pink Rose. This innovative straightener uses air flow technology to dry and straighten hair simultaneously, reducing heat damage and styling time. Features include intelligent heat control, ceramic plates, and a sleek pink rose design. Perfect for achieving smooth, straight hair with minimal damage. This gently used unit is in excellent condition and fully functional.",
+  "price": 299.99,
+  "rating": 4.7,
+  "reviewCount": 8,
+  "inStock": true,
+  "slug": "dyson-airstrait-hair-straightener-ceramic-pink-rose",
   "images": [
     "/products/dyson-airstrait-hair-straightener-ceramic-pink-rose/img1.webp",
     "/products/dyson-airstrait-hair-straightener-ceramic-pink-rose/img2.webp",
@@ -11,15 +13,15 @@
     "/products/dyson-airstrait-hair-straightener-ceramic-pink-rose/img4.webp",
     "/products/dyson-airstrait-hair-straightener-ceramic-pink-rose/img5.webp"
   ],
-  "condition": "Used",
-  "category": "Hair Styling Tools",
+  "condition": "Gently used",
+  "category": "Beauty & Personal Care",
   "brand": "Dyson",
   "payeeEmail": "happyemilliano@gmail.com",
   "currency": "USD",
-  "checkoutLink": "https://buymeacoffee.com/annahoffman/extras/checkout/9f2e5ee0-2b16-486d-ab68-cb7ae95b235f",
+  "checkoutLink": "https://buymeacoffee.com/annahoffman/extras/checkout/9f325a60-804f-4ab1-b775-00415f968828",
   "meta": {
     "title": "Dyson Airstrait Hair Straightener Ceramic Pink Rose - HappyDeel",
-    "description": "Dyson Airstrait Hair Straightener in Ceramic Pink Rose Gold. Sleek design, advanced technology, and smooth results. Used, see images for details.",
-    "keywords": "Dyson, Airstrait, Hair Straightener, Ceramic, Pink Rose, Used, Hair Styling, Beauty, HappyDeel"
+    "description": "Experience salon-quality hair styling with the Dyson Airstrait Hair Straightener in Ceramic Pink Rose. This innovative straightener uses air flow technology to dry and straighten hair simultaneously, reducing heat damage and styling time.",
+    "keywords": "Dyson Airstrait, Hair Straightener, Ceramic Pink Rose, Hair Styling, Beauty, Personal Care, Dyson, HappyDeel"
   }
 }

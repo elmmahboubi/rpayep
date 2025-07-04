@@ -4,6 +4,8 @@
   "price": 404.11,
   "rating": 4.6,
   "reviewCount": 11,
+  "inStock": true,
+  "slug": "swarovski-binoculars-el-with-box",
   "images": [
     "/products/swarovski-binoculars-el-with-box/img1.webp",
     "/products/swarovski-binoculars-el-with-box/img2.webp",

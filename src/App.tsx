@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import * as helmetAsync from 'react-helmet-async';
 import ScrollToTop from './components/ScrollToTop';
 
 // Eager load HomePage for better initial load performance
@@ -17,6 +17,8 @@ const AboutPage = lazy(() => import('./pages/about'));
 const ShippingPolicyPage = lazy(() => import('./pages/shipping-policy'));
 const CookiesPage = lazy(() => import('./pages/cookies'));
 const CheckoutPage = lazy(() => import('./pages/checkout'));
+
+const { HelmetProvider } = helmetAsync;
 
 interface AppProps {
   initialData?: any;

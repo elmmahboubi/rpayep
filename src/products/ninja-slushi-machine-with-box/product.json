@@ -4,6 +4,8 @@
   "price": 122.99,
   "rating": 4.7,
   "reviewCount": 553,
+  "inStock": true,
+  "slug": "ninja-slushi-machine-with-box",
   "images": [
     "/products/ninja-slushi-machine-with-box/img1.webp",
     "/products/ninja-slushi-machine-with-box/img2.webp",

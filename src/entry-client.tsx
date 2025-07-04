@@ -1,6 +1,6 @@
 import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
 import './index.css';
@@ -31,40 +31,38 @@ function notifyVisitorOnClient() {
   }
 }
 
-// FOUC prevention: Manage hydration loading states
+// Hydration state management
 function setHydrationComplete() {
-  const htmlElement = document.documentElement;
-  const fallbackElement = document.querySelector('.hydration-fallback');
-  
-  // Remove loading class and add complete class
-  htmlElement.classList.remove('hydration-loading');
-  htmlElement.classList.add('hydration-complete');
-  
-  // Remove the fallback loading spinner
-  if (fallbackElement) {
-    fallbackElement.remove();
+  if (typeof document !== 'undefined') {
+    document.documentElement.classList.remove('hydration-loading');
+    document.documentElement.classList.add('hydration-complete');
   }
-  
-  console.log('✅ FOUC prevention: Hydration complete, content now visible');
 }
 
 function setHydrationError() {
-  const htmlElement = document.documentElement;
-  const fallbackElement = document.querySelector('.hydration-fallback');
-  
-  // Still remove loading class to show content
-  htmlElement.classList.remove('hydration-loading');
-  htmlElement.classList.add('hydration-complete');
-  
-  // Remove the fallback loading spinner
-  if (fallbackElement) {
-    fallbackElement.remove();
+  if (typeof document !== 'undefined') {
+    document.documentElement.classList.remove('hydration-loading');
+    document.documentElement.classList.add('hydration-error');
   }
-  
-  console.log('⚠️ FOUC prevention: Hydration had issues, but content is now visible');
 }
 
-// Ensure DOM is ready before hydration
+// Create the router with future flags
+const router = createBrowserRouter(
+  [
+    {
+      path: "*",
+      Component: () => <App initialData={initialData} />,
+    },
+  ],
+  {
+    // Opt-in to future flags to remove warnings
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    },
+  }
+);
+
 async function initializeApp() {
   const rootElement = document.getElementById('root');
   
@@ -75,23 +73,18 @@ async function initializeApp() {
   }
 
   try {
-    // CRITICAL: Use hydrateRoot for SSR, not createRoot
-    // This hydrates the server-rendered HTML instead of replacing it
+    // Use RouterProvider for hydration
     hydrateRoot(
       rootElement,
-      <ErrorBoundary>
-        <BrowserRouter>
-          <App initialData={initialData} />
-        </BrowserRouter>
-      </ErrorBoundary>
+      <React.StrictMode>
+        <ErrorBoundary>
+          <RouterProvider router={router} fallbackElement={null} />
+        </ErrorBoundary>
+      </React.StrictMode>
     );
 
-    // FOUC Prevention: Mark hydration as complete
     setHydrationComplete();
-
-    // Run client-only initialization after successful hydration
     notifyVisitorOnClient();
-    
     console.log('✅ SSR Hydration successful');
     
   } catch (error) {
@@ -106,11 +99,11 @@ async function initializeApp() {
       const root = createRoot(rootElement);
       
       root.render(
-        <ErrorBoundary>
-          <BrowserRouter>
-            <App initialData={initialData} />
-          </BrowserRouter>
-        </ErrorBoundary>
+        <React.StrictMode>
+          <ErrorBoundary>
+            <RouterProvider router={router} fallbackElement={null} />
+          </ErrorBoundary>
+        </React.StrictMode>
       );
       
       notifyVisitorOnClient();
@@ -146,6 +139,5 @@ async function initializeApp() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeApp);
 } else {
-  // DOM is already ready
   initializeApp();
 }

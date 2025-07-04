@@ -4,6 +4,8 @@
   "price": 160.88,
   "rating": 4.2,
   "reviewCount":   121,
+  "inStock": true,
+  "slug": "oura-ring-gen-4-silver-size-9",
   "images": [
     "/products/oura-ring-gen-4-silver-size-9/img1.webp",
     "/products/oura-ring-gen-4-silver-size-9/img2.webp",

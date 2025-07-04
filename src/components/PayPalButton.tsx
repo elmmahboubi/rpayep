@@ -1,4 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  ReactPayPalScriptOptions,
+  CreateOrderActions,
+  OnApproveActions,
+} from '@paypal/react-paypal-js';
+import ClientOnly from './ClientOnly';
 
 interface PayPalButtonProps {
   amount: number;
@@ -6,153 +14,91 @@ interface PayPalButtonProps {
   payeeEmail?: string;
 }
 
-const PayPalButton: React.FC<PayPalButtonProps> = ({ amount, description, payeeEmail }) => {
-  const paypalRef = useRef<HTMLDivElement>(null);
-  const [isScriptLoading, setIsScriptLoading] = useState(false);
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isClient, setIsClient] = useState(false);
+const PayPalButtonWrapper: React.FC<PayPalButtonProps> = ({
+  amount,
+  description,
+  payeeEmail,
+}) => {
+  const paypalOptions: ReactPayPalScriptOptions = {
+    clientId: 'sb', // IMPORTANT: Replace with your actual client ID for production
+    currency: 'USD',
+    components: 'buttons',
+  };
 
-  useEffect(() => {
-    // Set client-side flag first
-    setIsClient(true);
-  }, []);
+  const createOrder = (
+    _data: Record<string, unknown>,
+    actions: CreateOrderActions
+  ) => {
+    const purchase_units = [
+      {
+        amount: {
+          value: amount.toFixed(2),
+          currency_code: 'USD',
+        },
+        description: description,
+        ...(payeeEmail && { payee: { email_address: payeeEmail } }),
+      },
+    ];
+    return actions.order.create({ purchase_units });
+  };
 
-  useEffect(() => {
-    // Only run PayPal initialization on client side
-    if (!isClient || !amount || !description) {
-      if (!amount || !description) {
-        setError('Invalid payment configuration');
+  const onApprove = async (
+    _data: Record<string, unknown>,
+    actions: OnApproveActions
+  ) => {
+    try {
+      if (actions.order) {
+        const details = await actions.order.capture();
+        alert(
+          `Payment successful! Thank you, ${details.payer.name.given_name}!`
+        );
+        // Here you would typically handle the successful payment,
+        // e.g., redirect to a success page, update order status in your backend.
       }
-      return;
+    } catch (error) {
+      console.error('Payment capture error:', error);
+      // Handle payment error (e.g., show a message to the user)
     }
+  };
 
-    const loadPayPalScript = async () => {
-      try {
-        setIsScriptLoading(true);
-        setError(null);
+  const onError = (err: Record<string, unknown>) => {
+    console.error('PayPal button error:', err);
+    // Handle SDK or button rendering errors
+  };
 
-        // Remove any existing PayPal script
-        const existingScript = document.querySelector('script[src*="paypal"]');
-        if (existingScript) {
-          existingScript.remove();
-        }
-
-        // Clear the PayPal button container
-        if (paypalRef.current) {
-          paypalRef.current.innerHTML = '';
-        }
-
-        // Create and load new PayPal script
-        const script = document.createElement('script');
-        script.src = `https://www.paypal.com/sdk/js?client-id=sb&currency=USD&components=buttons`;
-        script.async = true;
-
-        const scriptPromise = new Promise<void>((resolve, reject) => {
-          script.onload = () => resolve();
-          script.onerror = () => reject(new Error('Failed to load PayPal script'));
-        });
-
-        document.body.appendChild(script);
-
-        await scriptPromise;
-        setIsScriptLoaded(true);
-
-        // Create PayPal buttons
-        if (!window.paypal || !paypalRef.current) {
-          throw new Error('PayPal SDK not initialized');
-        }
-
-        const buttons = window.paypal.Buttons({
-          style: {
-            layout: 'vertical',
-            color: 'blue',
-            shape: 'rect',
-            label: 'pay'
-          },
-          createOrder: (_data: any, actions: any) => {
-            const orderData = {
-              purchase_units: [{
-                amount: { 
-                  value: amount.toFixed(2),
-                  currency_code: 'USD'
-                },
-                description: description
-              }]
-            };
-
-            if (payeeEmail) {
-              orderData.purchase_units[0].payee = {
-                email_address: payeeEmail
-              };
-            }
-
-            return actions.order.create(orderData);
-          },
-          onApprove: async (data: any, actions: any) => {
-            try {
-              const details = await actions.order.capture();
-              alert(`Payment successful! Thank you, ${details.payer.name.given_name}!`);
-            } catch (error) {
-              console.error('Payment capture error:', error);
-              setError('Failed to process payment. Please try again.');
-            }
-          },
-          onError: (err: Error) => {
-            console.error('PayPal button error:', err);
-            setError('There was an error processing your payment. Please try again.');
-          }
-        });
-
-        await buttons.render(paypalRef.current);
-      } catch (error) {
-        console.error('PayPal initialization error:', error);
-        setError('Failed to initialize payment system. Please refresh and try again.');
-      } finally {
-        setIsScriptLoading(false);
-      }
-    };
-
-    loadPayPalScript();
-
-    // Cleanup function
-    return () => {
-      const script = document.querySelector('script[src*="paypal"]');
-      if (script) {
-        script.remove();
-      }
-      if (paypalRef.current) {
-        paypalRef.current.innerHTML = '';
-      }
-    };
-  }, [isClient, amount, description, payeeEmail]);
-
-  // Return null during SSR to prevent hydration mismatch
-  if (!isClient) {
-    return null;
-  }
-
-  if (error) {
+  if (!amount || amount <= 0) {
     return (
-      <div className="w-full p-4 bg-red-50 text-red-700 rounded-lg text-sm">
-        {error}
+      <div className="w-full p-4 bg-yellow-50 text-yellow-800 rounded-lg text-sm text-center">
+        Please add items to your cart to check out.
       </div>
     );
   }
 
   return (
-    <div className="w-full">
-      {isScriptLoading && (
-        <div className="w-full h-[150px] flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0046be]"></div>
-        </div>
-      )}
-      <div 
-        ref={paypalRef}
-        className={`w-full min-h-[150px] ${isScriptLoading ? 'hidden' : 'block'}`}
+    <PayPalScriptProvider options={paypalOptions}>
+      <PayPalButtons
+        style={{ layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay' }}
+        createOrder={createOrder}
+        onApprove={onApprove}
+        onError={onError}
+        forceReRender={[amount, description, payeeEmail]} // Re-render buttons if these props change
       />
-    </div>
+    </PayPalScriptProvider>
   );
 };
+
+// Wrap with ClientOnly to prevent any SSR issues with the PayPal SDK
+const PayPalButton: React.FC<PayPalButtonProps> = (props) => (
+  <ClientOnly
+    fallback={
+      <div className="w-full h-[150px] flex items-center justify-center bg-gray-100 rounded-lg">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-400"></div>
+        <p className="ml-4 text-gray-600">Loading Payment Options...</p>
+      </div>
+    }
+  >
+    <PayPalButtonWrapper {...props} />
+  </ClientOnly>
+);
 
 export default PayPalButton;

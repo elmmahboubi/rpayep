@@ -187,8 +187,8 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
 
         {/* Reviews List */}
         <div className="divide-y divide-gray-200">
-          {sortedReviews.map(review => (
-            <div key={review.id} className="p-6">
+          {sortedReviews.map((review, index) => (
+            <div key={`${review.id}-${index}`} className="p-6">
               <div className="flex items-start gap-4">
                 <img 
                   src={review.avatar || placeholderAvatar} 

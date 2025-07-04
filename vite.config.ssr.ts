@@ -1,15 +1,23 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// SSR build config - separate from client and server builds
+// ONLY for the SSR build
 export default defineConfig({
   plugins: [react()],
+  ssr: {
+    noExternal: ['react-helmet-async'],
+  },
   build: {
-    ssr: 'src/entry-server.tsx',
+    ssr: true,
     outDir: 'dist/server',
+    minify: true,
     rollupOptions: {
-      // No manualChunks for SSR - let Vite handle it
-      external: ['react', 'react-dom', 'react-router-dom'],
+      input: 'src/entry-server.tsx',
+      output: {
+        format: 'es',
+        entryFileNames: 'entry-server.js',
+      },
+      external: ['express', 'fs', 'path', 'compression'],
     },
   },
 }); 

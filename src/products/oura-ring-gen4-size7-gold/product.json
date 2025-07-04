@@ -4,6 +4,8 @@
   "price": 160.88,
   "rating": 4.5,
   "reviewCount": 12,
+  "inStock": true,
+  "slug": "oura-ring-gen4-size7-gold",
   "images": [
     "/products/oura-ring-gen4-size7-gold/img1.webp",
     "/products/oura-ring-gen4-size7-gold/img2.webp",

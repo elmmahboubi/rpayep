@@ -4,6 +4,8 @@
   "price": 104.25,
   "rating": 4.6,
   "reviewCount": 5,
+  "inStock": true,
+  "slug": "ninja-woodfire-outdoor-grill-og701-electric-bbq-smoker",
   "images": [
     "/products/ninja-woodfire-outdoor-grill-og701-electric-bbq-smoker/img1.webp",
     "/products/ninja-woodfire-outdoor-grill-og701-electric-bbq-smoker/img2.webp",

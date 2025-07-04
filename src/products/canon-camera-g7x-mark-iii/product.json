@@ -4,6 +4,8 @@
   "price": 399.95,
   "rating": 4.8,
   "reviewCount": 3,
+  "inStock": true,
+  "slug": "canon-camera-g7x-mark-iii",
   "images": [
     "/products/canon-camera-g7x-mark-iii/img1.webp",
     "/products/canon-camera-g7x-mark-iii/img2.webp",

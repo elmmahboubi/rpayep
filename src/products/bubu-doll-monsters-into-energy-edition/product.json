@@ -4,6 +4,8 @@
   "price": 49.99,
   "rating": 5,
   "reviewCount": 3,
+  "inStock": true,
+  "slug": "bubu-doll-monsters-into-energy-edition",
   "images": [
     "/products/bubu-doll-monsters-into-energy-edition/img1.webp",
     "/products/bubu-doll-monsters-into-energy-edition/img2.webp",
