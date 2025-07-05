@@ -12,7 +12,7 @@
       "dest": "/dist/client/assets/$1"
     },
     {
-      "src": "/(.*\\.ico|.*\\.svg|.*\\.png|.*\\.webp)",
+      "src": "/(.*\\.(?:ico|svg|png|webp|woff2))$",
       "dest": "/dist/client/$1"
     },
     {

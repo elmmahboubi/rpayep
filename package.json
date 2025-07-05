@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "tsx watch server.dev.ts",
     "build": "vite build --config vite.config.client.ts && vite build --config vite.config.ssr.ts",
-    "serve": "NODE_ENV=production tsx api/index.ts",
+    "serve": "echo 'This command is not used for Vercel. Use vercel dev instead.'",
     "lint": "eslint .",
-    "preview": "npm run build && npm run serve"
+    "preview": "npm run build && vercel dev"
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^8.3.0",
@@ -29,6 +29,7 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@types/ua-parser-js": "^0.7.39",
+    "@vercel/node": "^5.3.3",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.18",
     "eslint": "^9.9.1",
