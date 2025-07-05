@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch server.dev.ts",
+    "dev": "tsx watch server/index.ts",
     "build": "vite build --config vite.config.client.ts && vite build --config vite.config.ssr.ts",
-    "serve": "echo 'This command is not used for Vercel. Use vercel dev instead.'",
+    "serve": "NODE_ENV=production tsx server/index.ts",
     "lint": "eslint .",
-    "preview": "npm run build && vercel dev"
+    "preview": "npm run build && npm run serve"
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^8.3.0",

@@ -23,9 +23,7 @@
   "include": [
     "vite.config.client.ts",
     "vite.config.ssr.ts",
-    "server.dev.ts",
-    "server.prod.ts",
-    "api/index.ts",
+    "server/index.ts",
     "src/entry-server.tsx",
     "postcss.config.js",
     "tailwind.config.js"
