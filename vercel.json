@@ -1,24 +1,22 @@
 {
   "version": 2,
-  "framework": null,
-  "functions": {
-    "index.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "routes": [
+  "builds": [
     {
-      "src": "/assets/(.*)",
-      "dest": "/dist/client/assets/$1"
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/client"
+      }
     },
     {
-      "src": "/(.*\\.(ico|svg|png|webp|woff2))",
-      "dest": "/dist/client/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.js"
+      "src": "api/index.ts",
+      "use": "@vercel/node"
     }
   ],
-  "outputDirectory": "."
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.ts"
+    }
+  ]
 } 

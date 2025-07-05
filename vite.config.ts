@@ -1,13 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist/client',
-    manifest: true, // Important for some advanced SSR patterns
     rollupOptions: {
       input: 'index.html',
     },
+  },
+  ssr: {
+    noExternal: ['react-helmet-async'],
   },
 }); 

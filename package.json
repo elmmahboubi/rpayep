@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build --config vite.config.client.ts && vite build --config vite.config.ssr.ts",
-    "preview": "NODE_ENV=production node index.js"
+    "dev": "vite dev",
+    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^8.3.0",
