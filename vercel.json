@@ -2,27 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist",
-        "buildCommand": "npm run build:vercel"
-      }
-    },
-    {
-      "src": "api/index.js",
+      "src": "api/index.ts",
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/((?!api/|assets/|.*\\..*).*)",
-      "destination": "/api/index.js"
+      "src": "/assets/(.*)",
+      "dest": "/dist/client/assets/$1"
+    },
+    {
+      "src": "/(.*\\.ico|.*\\.svg|.*\\.png|.*\\.webp)",
+      "dest": "/dist/client/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.ts"
     }
-  ],
-  "functions": {
-    "api/index.js": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }
