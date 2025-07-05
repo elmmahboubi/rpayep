@@ -4,11 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch server/index.ts",
-    "build": "vite build --config vite.config.client.ts && vite build --config vite.config.ssr.ts",
-    "serve": "NODE_ENV=production tsx server/index.ts",
-    "lint": "eslint .",
-    "preview": "npm run build && npm run serve"
+    "dev": "vite",
+    "build": "vite build --outDir dist/client && vite build --ssr --outDir dist/server",
+    "preview": "vite preview",
+    "serve": "node api"
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^8.3.0",
