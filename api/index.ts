@@ -13,8 +13,45 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const url = req.url ?? '/';
   
   try {
-    // Use dynamic import for the ES module SSR entry
-    const { render } = await import(resolve(VERCEL_DIST_PATH, 'server', 'entry-server.js'));
+    // Try multiple possible paths for the dist directory
+    const possiblePaths = [
+      resolve(__dirname, '..', 'dist'),
+      resolve(__dirname, '..', '..', 'dist'),
+      resolve(process.cwd(), 'dist'),
+      '/var/task/dist', // Vercel's build environment
+    ];
+
+    let distPath = null;
+    let template = null;
+    let render = null;
+
+    // Find the correct dist path
+    for (const path of possiblePaths) {
+      try {
+        const templatePath = resolve(path, 'client', 'index.html');
+        const serverPath = resolve(path, 'server', 'entry-server.js');
+        
+        // Test if files exist
+        readFileSync(templatePath, 'utf-8');
+        require(serverPath);
+        
+        distPath = path;
+        template = readFileSync(templatePath, 'utf-8');
+        const { render: renderFn } = await import(serverPath);
+        render = renderFn;
+        break;
+      } catch (error) {
+        console.log(`Path ${path} not found or invalid`);
+        continue;
+      }
+    }
+
+    if (!template || !render) {
+      throw new Error('Could not find build files. Available paths tried: ' + possiblePaths.join(', '));
+    }
+
+    console.log('Using dist path:', distPath);
+    console.log('Rendering URL:', url);
 
     const { appHtml, headHtml, initialData, statusCode } = await render(url);
 
@@ -32,7 +69,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate=59') // Recommended Vercel caching
       .send(html);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('<h1>Internal Server Error</h1>');
+    console.error('API handler error:', error);
+    res.status(500).send(`<h1>Internal Server Error</h1><p>${error.message}</p>`);
   }
 } 
