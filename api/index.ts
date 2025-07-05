@@ -1,7 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { render } from '../dist/server/entry-server.js';
-import {readFileSync} from 'node:fs';
-import {resolve} from 'node:path';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+// Use require so TypeScript doesn't type-check the SSR entry
+const { render } = require('../dist/server/main.js');
 
 const template = readFileSync(resolve('./dist/client/index.html'), 'utf-8');
 
