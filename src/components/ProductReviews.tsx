@@ -53,6 +53,16 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
     }));
   };
 
+  // Generate random helpful count between 9-27 for each review
+  const getRandomHelpful = (id: string) => {
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const min = 9, max = 27;
+    return min + (Math.abs(hash) % (max - min + 1));
+  };
+
   const formatDate = (dateString: string) => {
     try {
       return new Date(dateString).toLocaleDateString('en-US', {
@@ -206,7 +216,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
                       <h3 className="font-medium text-gray-900 flex items-center gap-2 flex-wrap sm:flex-nowrap">
                         {review.author}
                         {review.verified && (
-                          <span className="flex items-center text-[#0046be] text-sm sm:inline-block block mt-1 sm:mt-0">
+                          <span className="flex items-center text-[#0046be] text-sm">
                             <CheckCircle2 className="h-4 w-4 mr-1" />
                             Verified Purchase
                           </span>
@@ -265,15 +275,15 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
                     <div className="mt-4">
                       <button 
                         onClick={() => handleHelpfulClick(review.id)}
-                        className={`flex items-center ${
+                        className={`flex items-center text-sm px-3 py-1.5 rounded-md transition-colors duration-200 ${
                           helpfulClicks[review.id] 
-                            ? 'text-[#0046be]' 
-                            : 'text-gray-500 hover:text-[#0046be]'
-                        } transition-colors duration-300`}
+                            ? 'bg-[#0046be] text-white' 
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
                       >
                         <ThumbsUp className="h-4 w-4 mr-1" />
                         <span>
-                          Helpful ({helpfulClicks[review.id] ? review.helpful + 1 : review.helpful})
+                          Helpful ({helpfulClicks[review.id] ? getRandomHelpful(review.id) + 1 : getRandomHelpful(review.id)})
                         </span>
                       </button>
                     </div>

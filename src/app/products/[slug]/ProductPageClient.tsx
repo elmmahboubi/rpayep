@@ -72,7 +72,7 @@ export default function ProductPageClient({ product: initialProduct }: ProductPa
     setIsAddingToCart(true);
     preventScrollOnClick(() => {
       addToCart(product);
-      router.push('/checkout');
+      goToCheckout();
     }, true);
   };
 
@@ -81,7 +81,7 @@ export default function ProductPageClient({ product: initialProduct }: ProductPa
     setIsBuyingNow(true);
     preventScrollOnClick(() => {
       addToCart(product);
-      router.push('/checkout');
+      goToCheckout();
     }, true);
   };
 
@@ -107,6 +107,11 @@ export default function ProductPageClient({ product: initialProduct }: ProductPa
     setActiveImage(index);
     setShowZoom(true);
     setZoomLevel(1);
+  };
+
+  const goToCheckout = () => {
+    router.push('/checkout');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (!product) {

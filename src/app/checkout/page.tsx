@@ -96,6 +96,12 @@ const CheckoutPage: React.FC = () => {
     }
   }, [router]);
 
+  useEffect(() => {
+    if (isRedirecting) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [isRedirecting]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setShippingData(prev => ({ ...prev, [name]: value }));
@@ -200,14 +206,12 @@ const CheckoutPage: React.FC = () => {
         setIsSendingEmail(false);
         return;
       }
-
-      // Proceed with redirect
+      setIsSendingEmail(false);
       setIsRedirecting(true);
-      
-      // Redirect immediately after email is sent
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => {
         window.location.href = product.checkoutLink;
-      }, 1500);
+      }, 4000); // 4 seconds
       
     } catch (error) {
       console.error('Error during checkout:', error);
@@ -220,6 +224,7 @@ const CheckoutPage: React.FC = () => {
     preventScrollOnClick(() => {
       if (typeof window !== 'undefined') {
         clearCart();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
       router.push('/');
     }, true);
@@ -236,6 +241,38 @@ const CheckoutPage: React.FC = () => {
             </Link>
           </div>
         </main>
+      </div>
+    );
+  }
+
+  if (isRedirecting) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#e0e7ff] via-[#f8fafc] to-[#f0fdfa]">
+        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-10 border border-gray-100 flex flex-col items-center max-w-md mx-auto transition-all duration-500">
+          <div className="mb-6 flex flex-col items-center">
+            {/* Minimal neutral spinner */}
+            <div className="mb-6">
+              <div className="w-12 h-12 border-4 border-[#0046be]/30 border-t-[#0046be] rounded-full animate-spin"></div>
+            </div>
+            <Image 
+              src="/secure-checkout.png" 
+              alt="SSL Secure Checkout" 
+              width={180}
+              height={32}
+              className="h-7 w-auto max-w-full object-contain mb-4 drop-shadow-lg"
+            />
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-2 text-center tracking-tight">Address Confirmed</h2>
+            <p className="text-gray-700 text-center mb-2 text-lg font-medium">Your order will be sent to this address</p>
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-2 w-full max-w-xs text-sm text-gray-800 shadow-sm">
+              <div className="font-semibold text-[#0046be] mb-1">Confirmed Address</div>
+              <div>{shippingData.streetAddress}</div>
+              <div>{shippingData.city}, {shippingData.state} {shippingData.zipCode}</div>
+              <div>Phone: {selectedCountryCode + shippingData.phoneNumber}</div>
+            </div>
+            <p className="text-gray-600 text-center mb-2 text-base">Wait to continue your checkout</p>
+            <p className="text-xs text-gray-400 mt-2">Your information is encrypted and protected by SSL. Please do not close this window.</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -444,7 +481,7 @@ const CheckoutPage: React.FC = () => {
                       <Image 
                         src="/secure-checkout.png" 
                         alt="Secure Checkout" 
-                        width={120}
+                        width={200}
                         height={32}
                         className="h-8 w-auto max-w-full object-contain"
                       />
@@ -521,6 +558,7 @@ const CheckoutPage: React.FC = () => {
                       <button
                         onClick={() => {
                           setIsRedirecting(true);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
                           setTimeout(() => {
                             window.location.href = product.checkoutLink;
                           }, 1000);

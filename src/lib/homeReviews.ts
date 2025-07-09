@@ -72,7 +72,7 @@ export const homeReviews: Review[] = [
   {
     id: "home-review-5",
     author: "Mike Chen",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face&auto=format&q=80",
+    avatar: "https://i.ibb.co/4w8W5qG8/icon-7797704-640.png",
     rating: 4,
     date: "2024-01-08",
     title: "Great camera, minor cosmetic issues",

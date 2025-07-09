@@ -2,13 +2,23 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Star, CheckCircle2, X, Send } from 'lucide-react';
+import { Star, CheckCircle2, X, Send, ThumbsUp } from 'lucide-react';
 import type { Review } from '@/types/product';
 
 interface HomeReviewsProps {
   reviews: Review[];
   averageRating: number;
   totalReviews: number;
+}
+
+function getRandomHelpful(id: string) {
+  // Use a seeded pseudo-random for stable numbers per review
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash = id.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const min = 9, max = 27;
+  return min + (Math.abs(hash) % (max - min + 1));
 }
 
 const HomeReviews: React.FC<HomeReviewsProps> = ({ 
@@ -24,20 +34,33 @@ const HomeReviews: React.FC<HomeReviewsProps> = ({
     title: '',
     content: ''
   });
-  
+  // Track likes per review (not persisted)
+  const [likes, setLikes] = useState(() => {
+    const initial: Record<string, number> = {};
+    reviews.forEach(r => {
+      initial[r.id] = getRandomHelpful(r.id);
+    });
+    return initial;
+  });
+  const [liked, setLiked] = useState<Record<string, boolean>>({});
+
   // Placeholder avatar for reviews without custom avatars
   const placeholderAvatar = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face&auto=format&q=80";
 
   // Show only 5 reviews
   const displayReviews = reviews.slice(0, 5);
 
+  const handleLike = (id: string) => {
+    if (liked[id]) return;
+    setLikes(l => ({ ...l, [id]: l[id] + 1 }));
+    setLiked(l => ({ ...l, [id]: true }));
+  };
+
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault();
     setShowReviewForm(false);
     setShowSuccess(true);
     setFormData({ name: '', rating: 5, title: '', content: '' });
-    
-    // Hide success message after 3 seconds
     setTimeout(() => {
       setShowSuccess(false);
     }, 3000);
@@ -55,7 +78,6 @@ const HomeReviews: React.FC<HomeReviewsProps> = ({
     }
   };
 
-  // If no reviews, show a message
   if (reviews.length === 0) {
     return (
       <section className="py-16 bg-white">
@@ -140,14 +162,14 @@ const HomeReviews: React.FC<HomeReviewsProps> = ({
                           <h3 className="font-medium text-gray-900 flex items-center gap-2 flex-wrap sm:flex-nowrap">
                             {review.author}
                             {review.verified && (
-                              <span className="flex items-center text-[#0046be] text-sm sm:inline-block block mt-1 sm:mt-0">
+                              <span className="flex items-center text-[#0046be] text-sm">
                                 <CheckCircle2 className="h-4 w-4 mr-1" />
                                 Verified Purchase
                               </span>
                             )}
                           </h3>
                           <div className="text-sm text-gray-500">
-                            {review.location && `${review.location} • `}
+                            {review.location && `${review.location} 2 `}
                             {review.purchaseDate && `Purchased ${review.purchaseDate}`}
                           </div>
                         </div>
@@ -165,6 +187,18 @@ const HomeReviews: React.FC<HomeReviewsProps> = ({
 
                       <h4 className="font-medium text-gray-900 mb-2">{review.title}</h4>
                       <p className="text-gray-600">{review.content}</p>
+                      <button
+                        onClick={() => handleLike(review.id)}
+                        className={`mt-2 flex items-center gap-2 text-sm px-3 py-1.5 rounded-md transition-colors duration-200 ${
+                          liked[review.id] 
+                            ? 'bg-[#0046be] text-white' 
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                        aria-pressed={liked[review.id]}
+                        disabled={liked[review.id]}
+                      >
+                        <ThumbsUp className="h-4 w-4" /> Helpful ({likes[review.id]})
+                      </button>
                     </div>
                   </div>
                 </div>
