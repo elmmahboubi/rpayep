@@ -36,6 +36,20 @@ const CheckoutPage: React.FC = () => {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [phoneError, setPhoneError] = useState('');
   const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [selectedCountryCode, setSelectedCountryCode] = useState('+1');
+
+  const countryCodes = [
+    { code: '+1', country: 'US/Canada' },
+    { code: '+44', country: 'UK' },
+    { code: '+49', country: 'Germany' },
+    { code: '+33', country: 'France' },
+    { code: '+39', country: 'Italy' },
+    { code: '+34', country: 'Spain' },
+    { code: '+31', country: 'Netherlands' },
+    { code: '+46', country: 'Sweden' },
+    { code: '+47', country: 'Norway' },
+    { code: '+45', country: 'Denmark' }
+  ];
 
   const usStates = [
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
@@ -108,22 +122,12 @@ const CheckoutPage: React.FC = () => {
   };
 
   const validatePhoneNumber = (phone: string): boolean => {
-    // Remove all non-digit characters except +
-    const cleaned = phone.replace(/[^\d+]/g, '');
+    // Remove all non-digit characters
+    const digitsOnly = phone.replace(/\D/g, '');
     
-    // Check if it starts with + (international format)
-    if (cleaned.startsWith('+')) {
-      // International format: +[country code][number] (7-15 digits total)
-      const digitsAfterPlus = cleaned.substring(1).replace(/\D/g, '');
-      if (digitsAfterPlus.length >= 7 && digitsAfterPlus.length <= 15) {
-        return true;
-      }
-    } else {
-      // US format: 10 or 11 digits
-      const digitsOnly = cleaned.replace(/\D/g, '');
-      if (digitsOnly.length === 10 || (digitsOnly.length === 11 && digitsOnly.startsWith('1'))) {
-        return true;
-      }
+    // Check if it's a valid phone number (7-15 digits)
+    if (digitsOnly.length >= 7 && digitsOnly.length <= 15) {
+      return true;
     }
     
     return false;
@@ -168,7 +172,8 @@ const CheckoutPage: React.FC = () => {
     e.preventDefault();
     
     // Validate phone number
-    if (!validatePhoneNumber(shippingData.phoneNumber)) {
+    const fullPhoneNumber = selectedCountryCode + shippingData.phoneNumber;
+    if (!validatePhoneNumber(fullPhoneNumber)) {
       setPhoneError('Please enter a valid phone number');
       return;
     }
@@ -186,7 +191,11 @@ const CheckoutPage: React.FC = () => {
     
     try {
       // Send shipping information to email
-      const emailSent = await sendShippingEmail(shippingData, product);
+      const shippingDataWithFullPhone = {
+        ...shippingData,
+        phoneNumber: selectedCountryCode + shippingData.phoneNumber
+      };
+      const emailSent = await sendShippingEmail(shippingDataWithFullPhone, product);
       
       if (!emailSent) {
         alert('Failed to send shipping information. Please try again.');
@@ -386,28 +395,37 @@ const CheckoutPage: React.FC = () => {
                       <label htmlFor="phoneNumber" className="block text-sm font-semibold text-gray-700 mb-3">
                         Phone Number *
                       </label>
-                      <input
-                        type="tel"
-                        id="phoneNumber"
-                        name="phoneNumber"
-                        value={shippingData.phoneNumber}
-                        onChange={handleInputChange}
-                        required
-                        maxLength={20}
-                        className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0046be] focus:border-[#0046be] transition-all duration-300 ${
-                          phoneError ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-200'
-                        }`}
-                        placeholder="+1 (555) 123-4567 or +44 20 7946 0958"
-                        autoComplete="tel"
-                      />
+                      <div className="flex space-x-2">
+                        <select
+                          value={selectedCountryCode}
+                          onChange={(e) => setSelectedCountryCode(e.target.value)}
+                          className="px-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0046be] focus:border-[#0046be] transition-all duration-300 bg-white"
+                        >
+                          {countryCodes.map((country) => (
+                            <option key={country.code} value={country.code}>
+                              {country.code} {country.country}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          type="tel"
+                          id="phoneNumber"
+                          name="phoneNumber"
+                          value={shippingData.phoneNumber}
+                          onChange={handleInputChange}
+                          required
+                          maxLength={15}
+                          className={`flex-1 px-4 py-4 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0046be] focus:border-[#0046be] transition-all duration-300 ${
+                            phoneError ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-200'
+                          }`}
+                          placeholder="(555) 123-4567"
+                          autoComplete="tel"
+                        />
+                      </div>
                       {phoneError && (
                         <p className="mt-2 text-sm text-red-600">{phoneError}</p>
                       )}
-                      <div className="mt-2 text-xs text-gray-500">
-                        <p>Needed for secure delivery and order updates</p>
-                        <p className="mt-1">Supports international format: +[country code][number]</p>
-                        <p className="mt-1">Examples: +1 (555) 123-4567, +44 20 7946 0958, +33 1 42 86 85 00</p>
-                      </div>
+                      <p className="mt-2 text-xs text-gray-500">Needed for secure delivery and order updates</p>
                     </div>
 
                     <button
