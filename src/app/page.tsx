@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Hero from '@/components/Hero';
 import FeaturedProduct from '@/components/FeaturedProduct';
 import ProductGrid from '@/components/ProductGrid';
@@ -16,7 +16,9 @@ export default async function HomePage() {
 
   return (
     <>
-      <ScrollToTop />
+      <Suspense fallback={null}>
+        <ScrollToTop />
+      </Suspense>
       <Hero />
       
       <section id="featured" className="py-16 bg-gradient-to-b from-white to-gray-50">
@@ -35,7 +37,9 @@ export default async function HomePage() {
         </div>
       </section>
       
-      <ProductGrid products={allProducts} />
+      <Suspense fallback={null}>
+        <ProductGrid products={allProducts} />
+      </Suspense>
       
       <HomeReviews 
         reviews={homeReviews}

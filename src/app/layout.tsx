@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
+import ClientHeader from "@/components/ClientHeader";
 import Footer from "@/components/Footer";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Script from "next/script";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "HappyDeel - Where Savings Make You Smile.",
@@ -123,7 +124,9 @@ export default function RootLayout({
         
         <ErrorBoundary>
           <div className="min-h-screen flex flex-col">
-            <Header />
+            <Suspense fallback={null}>
+              <ClientHeader />
+            </Suspense>
             <main className="flex-grow">
               {children}
             </main>

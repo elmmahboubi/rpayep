@@ -8,6 +8,15 @@ import { getCartItem, clearCart } from '@/utils/cart';
 import { preventScrollOnClick } from '@/utils/scrollUtils';
 import type { CartItem } from '@/utils/cart';
 import Image from 'next/image';
+import type { Product } from '@/types/product';
+
+interface ShippingData {
+  streetAddress: string;
+  city: string;
+  zipCode: string;
+  state: string;
+  phoneNumber: string;
+}
 
 const CheckoutPage: React.FC = () => {
   const router = useRouter();
@@ -122,8 +131,7 @@ const CheckoutPage: React.FC = () => {
     return false;
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sendShippingEmail = async (shippingData: any, product: any) => {
+  const sendShippingEmail = async (shippingData: ShippingData, product: Product) => {
     try {
       const response = await fetch('/api/send-shipping-email', {
         method: 'POST',

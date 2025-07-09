@@ -1,14 +1,26 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   try {
+    const { EMAIL_USER, EMAIL_PASS } = process.env;
+
+    if (!EMAIL_USER || !EMAIL_PASS) {
+      return NextResponse.json(
+        { 
+          error: 'Email credentials are not configured in environment variables.',
+          suggestion: 'Please set EMAIL_USER and EMAIL_PASS in your .env.local file.'
+        },
+        { status: 500 }
+      );
+    }
+
     // Create transporter for Gmail with app password
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'arvaradodotcom@gmail.com',
-        pass: 'iwar xzav utnb bxyw',
+        user: EMAIL_USER,
+        pass: EMAIL_PASS,
       },
       secure: false,
       tls: {
@@ -25,7 +37,7 @@ export async function GET() {
 
     // Email options
     const mailOptions = {
-      from: 'arvaradodotcom@gmail.com',
+      from: EMAIL_USER,
       to: 'mehdito2001@outlook.com',
       subject: 'Test Email - Checkout System',
       html: emailContent,
@@ -51,4 +63,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}

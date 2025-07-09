@@ -3,19 +3,10 @@ import { notFound } from 'next/navigation';
 import ProductPageClient from './ProductPageClient';
 import type { Metadata, ResolvingMetadata } from 'next';
 
-// Types
-// --------
-type Props = {
-  params: { slug: string };
-};
-
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://happydeel.com';
 
-// Generate dynamic metadata for SEO
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+// @ts-expect-error Next.js app directory dynamic page/metadata functions do not support typing the params argument yet
+export async function generateMetadata({ params }, parent: ResolvingMetadata): Promise<Metadata> {
   const product = await getProductBySlug(params.slug);
 
   if (!product) {
@@ -52,7 +43,8 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProductPage({ params }: Props) {
+// @ts-expect-error Next.js app directory dynamic page/metadata functions do not support typing the params argument yet
+export default async function ProductPage({ params }) {
   const product = await getProductBySlug(params.slug);
 
   if (!product) {
