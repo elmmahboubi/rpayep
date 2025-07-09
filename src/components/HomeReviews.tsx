@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Star, ThumbsUp, CheckCircle2, X, Send } from 'lucide-react';
+import { Star, CheckCircle2, X, Send } from 'lucide-react';
 import type { Review } from '@/types/product';
 
 interface HomeReviewsProps {

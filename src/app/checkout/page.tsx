@@ -1,24 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Check, CreditCard, MapPin, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Check, MapPin } from 'lucide-react';
 import { getCartItem, clearCart } from '@/utils/cart';
 import { preventScrollOnClick } from '@/utils/scrollUtils';
 import type { CartItem } from '@/utils/cart';
-
-interface AddressSuggestion {
-  place_id: string;
-  display_name: string;
-  address: {
-    house_number?: string;
-    road?: string;
-    city?: string;
-    state?: string;
-    postcode?: string;
-  };
-}
 
 const CheckoutPage: React.FC = () => {
   const router = useRouter();
@@ -98,6 +86,7 @@ const CheckoutPage: React.FC = () => {
     }
   }, [router]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setShippingData(prev => ({ ...prev, [name]: value }));
@@ -133,6 +122,7 @@ const CheckoutPage: React.FC = () => {
     return false;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sendShippingEmail = async (shippingData: any, product: any) => {
     try {
       const response = await fetch('/api/send-shipping-email', {
@@ -206,10 +196,10 @@ const CheckoutPage: React.FC = () => {
       // Proceed with redirect
       setIsRedirecting(true);
       
-      // Simulate a brief delay to show loading state
+      // Redirect immediately after email is sent
       setTimeout(() => {
         window.location.href = product.checkoutLink;
-      }, 2000);
+      }, 1500);
       
     } catch (error) {
       console.error('Error during checkout:', error);
@@ -403,7 +393,7 @@ const CheckoutPage: React.FC = () => {
                         >
                           {countryCodes.map((country) => (
                             <option key={country.code} value={country.code}>
-                              {country.code} {country.country}
+                              {country.code}
                             </option>
                           ))}
                         </select>
@@ -437,7 +427,7 @@ const CheckoutPage: React.FC = () => {
                           : 'bg-[#0046be] hover:bg-[#003494] text-white'
                       }`}
                     >
-                      {isSendingEmail ? 'Sending Information...' : isRedirecting ? 'Redirecting...' : 'Continue to Payment'}
+                      {isSendingEmail ? 'Confirming Address...' : isRedirecting ? 'Redirecting...' : 'Continue to Payment'}
                     </button>
 
                     <div className="mt-6 flex flex-col items-center space-y-4">
@@ -481,16 +471,16 @@ const CheckoutPage: React.FC = () => {
                     <div className="flex flex-col items-center space-y-6">
                       <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#0046be]"></div>
                       <div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Preparing Your Checkout</h3>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Your Address Has Been Confirmed</h3>
                         <p className="text-gray-600">Redirecting you to our secure payment processor...</p>
                       </div>
-                      <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-100 max-w-md">
-                        <h4 className="font-semibold text-gray-900 mb-3">Shipping Address Confirmed</h4>
-                        <div className="text-sm text-gray-600 space-y-1">
+                      <div className="mt-8 p-6 bg-green-50 rounded-xl border border-green-100 max-w-md">
+                        <h4 className="font-semibold text-green-900 mb-3">✓ Address Confirmed</h4>
+                        <div className="text-sm text-green-800 space-y-1">
                           <p>{shippingData.streetAddress}</p>
                           <p>{shippingData.city}, {shippingData.state} {shippingData.zipCode}</p>
                           {shippingData.phoneNumber && (
-                            <p>Phone: {shippingData.phoneNumber}</p>
+                            <p>Phone: {selectedCountryCode + shippingData.phoneNumber}</p>
                           )}
                         </div>
                       </div>
