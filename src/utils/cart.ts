@@ -1,4 +1,4 @@
-import type { Product } from '../types/product';
+import type { Product } from '@/types/product';
 
 export interface CartItem {
   product: Product;
@@ -39,4 +39,4 @@ export function clearCart(): void {
 export function getCartCount(): number {
   const cartItem = getCartItem();
   return cartItem ? cartItem.quantity : 0;
-}
+} 

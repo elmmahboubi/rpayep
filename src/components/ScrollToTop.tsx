@@ -1,19 +1,19 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+"use client";
 
-const ScrollToTop: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { pathname } = useLocation();
+import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+
+const ScrollToTop = () => {
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Scroll to top when pathname changes
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'instant'
-    });
-  }, [pathname]);
+    // Only scroll to top if there are no search parameters (clean URL)
+    if (!searchParams.toString()) {
+      window.scrollTo(0, 0);
+    }
+  }, [searchParams]);
 
-  return <>{children}</>;
+  return null;
 };
 
-export default ScrollToTop;
+export default ScrollToTop; 

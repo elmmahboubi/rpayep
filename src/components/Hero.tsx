@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 
 const Hero = () => {
@@ -42,10 +43,13 @@ const Hero = () => {
           <div className="md:w-1/2 relative">
             <div className="relative mx-auto w-full max-w-md">
               <div className="absolute inset-0 bg-gradient-to-r from-[#003494] to-[#0046be] rounded-2xl transform rotate-3 scale-105 opacity-50 blur-xl"></div>
-              <img 
+              <Image 
                 src="/g7x.webp" 
                 alt="Canon G7X Camera" 
-                className="relative z-10 rounded-2xl shadow-2xl w-full h-[400px] object-cover object-center"
+                width={500}
+                height={400}
+                priority
+                className="relative z-10 rounded-2xl shadow-2xl w-full h-auto object-cover object-center"
               />
               <div className="absolute -bottom-4 -right-4 bg-white rounded-lg shadow-lg p-4 z-20">
                 <div className="flex items-center">

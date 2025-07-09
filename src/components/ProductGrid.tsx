@@ -1,8 +1,10 @@
+"use client";
+
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import { Filter, ChevronDown } from 'lucide-react';
-import type { Product } from '../types/product';
+import type { Product } from '@/types/product';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -11,7 +13,7 @@ interface ProductGridProps {
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const [sortBy, setSortBy] = useState('price-high');
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -73,7 +75,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   );
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && productsRef.current) {
+    // Only scroll if there's a search query or filters applied AND it's not the initial load
+    if (typeof window !== 'undefined' && productsRef.current && (searchQuery || selectedBrands.length > 0 || selectedConditions.length > 0 || priceRange.min !== '' || priceRange.max !== '') && currentPage > 1) {
         const headerHeight = 120; // Approximate header height
         const elementPosition = productsRef.current.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
@@ -83,7 +86,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
             behavior: 'smooth'
         });
     }
-  }, [currentPage]);
+  }, [currentPage, searchQuery, selectedBrands, selectedConditions, priceRange]);
   
   useEffect(() => {
     setCurrentPage(1);

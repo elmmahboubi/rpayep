@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Star, ThumbsUp, CheckCircle2, ChevronDown, X, ZoomIn } from 'lucide-react';
-import type { Review } from '../types/product';
+import type { Review } from '@/types/product';
 
 interface ProductReviewsProps {
   reviews: Review[];
@@ -198,10 +200,10 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
                 <div className="flex-grow">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h3 className="font-medium text-gray-900 flex items-center gap-2">
+                      <h3 className="font-medium text-gray-900 flex items-center gap-2 flex-wrap sm:flex-nowrap">
                         {review.author}
                         {review.verified && (
-                          <span className="flex items-center text-[#0046be] text-sm">
+                          <span className="flex items-center text-[#0046be] text-sm sm:inline-block block mt-1 sm:mt-0">
                             <CheckCircle2 className="h-4 w-4 mr-1" />
                             Verified Purchase
                           </span>
@@ -305,4 +307,4 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
   );
 };
 
-export default ProductReviews;
+export default ProductReviews; 

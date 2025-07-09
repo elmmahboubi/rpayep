@@ -1,9 +1,12 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ShoppingCart, Menu, X, Search } from 'lucide-react';
-import { getProducts } from '../api/products';
-import { getCartCount } from '../utils/cart';
-import type { Product } from '../types/product';
+import { getCartCount } from '@/utils/cart';
+import type { Product } from '@/types/product';
 import ClientOnly from './ClientOnly';
 
 const Header = () => {
@@ -15,14 +18,18 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const searchRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const allProducts = await getProducts();
-        setProducts(allProducts);
+        // Load products from a client-side API route
+        const response = await fetch('/api/products');
+        if (response.ok) {
+          const allProducts = await response.json();
+          setProducts(allProducts);
+        }
       } catch (error) {
         console.error('Error loading products:', error);
       }
@@ -58,14 +65,16 @@ const Header = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+      const params = new URLSearchParams(searchParams);
+      params.set('search', searchQuery.trim());
+      router.push(`/?${params.toString()}`);
       setIsSearchOpen(false);
       setSearchQuery('');
       setFilteredProducts([]);
     }
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
     setIsLoading(true);
@@ -76,17 +85,35 @@ const Header = () => {
       return;
     }
 
-    const filtered = products.filter(product => 
-      product.title.toLowerCase().includes(query.toLowerCase()) ||
-      product.description.toLowerCase().includes(query.toLowerCase())
-    ).slice(0, 5);
-
-    setFilteredProducts(filtered);
-    setIsLoading(false);
+    try {
+      // Use the new search API for better performance
+      const response = await fetch(`/api/products/search?q=${encodeURIComponent(query)}&limit=5`);
+      if (response.ok) {
+        const searchResults = await response.json();
+        setFilteredProducts(searchResults);
+      } else {
+        // Fallback to client-side filtering if API fails
+        const filtered = products.filter(product => 
+          product.title.toLowerCase().includes(query.toLowerCase()) ||
+          product.description.toLowerCase().includes(query.toLowerCase())
+        ).slice(0, 5);
+        setFilteredProducts(filtered);
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      // Fallback to client-side filtering
+      const filtered = products.filter(product => 
+        product.title.toLowerCase().includes(query.toLowerCase()) ||
+        product.description.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 5);
+      setFilteredProducts(filtered);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleProductSelect = (product: Product) => {
-    navigate(`/products/${product.slug}`);
+    router.push(`/products/${product.slug}`);
     setIsSearchOpen(false);
     setSearchQuery('');
     setFilteredProducts([]);
@@ -94,7 +121,7 @@ const Header = () => {
 
   const handleCartClick = () => {
     if (cartCount > 0) {
-      navigate('/checkout');
+      router.push('/checkout');
     }
   };
 
@@ -113,16 +140,23 @@ const Header = () => {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src="/logosvg.svg" alt="HappyDeel" className="w-48" />
+            <Link href="/" className="flex items-center space-x-2">
+              <Image 
+                src="/logosvg.svg" 
+                alt="HappyDeel Logo"
+                width={192}
+                height={40}
+                priority
+                className="w-48"
+              />
             </Link>
 
             <nav className="hidden md:flex space-x-8 font-heading">
-              <Link to="/" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Home</Link>
-              <a href="/#products" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Products</a>
-              <a href="/#featured" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Featured</a>
-              <Link to="/track" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Track Order</Link>
-              <Link to="/contact" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Contact Us</Link>
+              <Link href="/" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Home</Link>
+              <Link href="/#products" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Products</Link>
+              <Link href="/#featured" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Featured</Link>
+              <Link href="/track" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Track Order</Link>
+              <Link href="/contact" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Contact Us</Link>
             </nav>
 
             <div className="hidden md:flex items-center space-x-4">
@@ -164,7 +198,15 @@ const Header = () => {
                       <div className="divide-y">
                         {filteredProducts.map((product) => (
                           <button key={product.id} onClick={() => handleProductSelect(product)} className="w-full text-left p-4 hover:bg-gray-50 flex items-center space-x-4 transition-colors duration-200">
-                            <img src={product.images[0]} alt={product.title} className="w-16 h-16 object-cover rounded" />
+                            <div className="relative w-16 h-16">
+                              <Image 
+                                src={product.images[0]} 
+                                alt={product.title} 
+                                fill
+                                className="object-cover rounded"
+                                sizes="64px"
+                              />
+                            </div>
                             <div>
                               <div className="font-medium text-gray-900">{product.title}</div>
                               <div className="text-sm text-gray-500">${new Intl.NumberFormat('en-US').format(product.price)}</div>
@@ -182,11 +224,11 @@ const Header = () => {
           {isMenuOpen && (
             <div className="md:hidden mt-4 py-4 border-t border-gray-200">
               <nav className="flex flex-col space-y-4 font-heading">
-                <Link to="/" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Home</Link>
-                <a href="/#products" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Products</a>
-                <a href="/#featured" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Featured</a>
-                <Link to="/track" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Track Order</Link>
-                <Link to="/contact" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Contact Us</Link>
+                <Link href="/" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Home</Link>
+                <Link href="/#products" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Products</Link>
+                <Link href="/#featured" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Featured</Link>
+                <Link href="/track" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Track Order</Link>
+                <Link href="/contact" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300" onClick={handleMobileMenuClose}>Contact Us</Link>
               </nav>
             </div>
           )}

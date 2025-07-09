@@ -1,0 +1,47 @@
+import React from 'react';
+import Hero from '@/components/Hero';
+import FeaturedProduct from '@/components/FeaturedProduct';
+import ProductGrid from '@/components/ProductGrid';
+import HomeReviews from '@/components/HomeReviews';
+import { getProducts } from '@/lib/data';
+import { homeReviews, homeReviewsStats } from '@/lib/homeReviews';
+import ScrollToTop from '@/components/ScrollToTop';
+
+export default async function HomePage() {
+  // Fetch all products just once
+  const allProducts = await getProducts(); 
+  
+  // Derive featured products from the main list
+  const featuredProducts = allProducts.slice(0, 4); 
+
+  return (
+    <>
+      <ScrollToTop />
+      <Hero />
+      
+      <section id="featured" className="py-16 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Products</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Check out our handpicked selection of premium electronics and photography equipment.
+            </p>
+          </div>
+          <div className="space-y-12">
+            {featuredProducts.map((product) => (
+              <FeaturedProduct key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      <ProductGrid products={allProducts} />
+      
+      <HomeReviews 
+        reviews={homeReviews}
+        averageRating={homeReviewsStats.averageRating}
+        totalReviews={homeReviewsStats.totalReviews}
+      />
+    </>
+  );
+}

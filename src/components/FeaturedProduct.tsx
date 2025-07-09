@@ -1,18 +1,26 @@
+"use client";
+
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Star, Award } from 'lucide-react';
-import type { Product } from '../types/product';
+import type { Product } from '@/types/product';
 
 interface FeaturedProductProps {
   product: Product;
 }
 
 const FeaturedProduct: React.FC<FeaturedProductProps> = ({ product }) => {
+  if (!product) {
+    return null;
+  }
+
   const { slug, title, description, price, rating, reviewCount, images } = product;
-  const navigate = useNavigate();
+
+
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-6xl mx-auto">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-6xl mx-auto transition-transform duration-300 hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.015]">
       <div className="flex flex-col lg:flex-row">
         {/* Image Section */}
         <div className="lg:w-1/2 relative overflow-hidden">
@@ -22,11 +30,15 @@ const FeaturedProduct: React.FC<FeaturedProductProps> = ({ product }) => {
               <span>Featured</span>
             </div>
           </div>
-          <img 
-            src={images[0]} 
-            alt={title}
-            className="w-full h-[300px] lg:h-[400px] object-cover object-center"
-          />
+          <div className="relative w-full h-[300px] lg:h-[400px]">
+            <Image 
+              src={images[0]} 
+              alt={title}
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </div>
         </div>
         
         {/* Content Section */}
@@ -59,14 +71,14 @@ const FeaturedProduct: React.FC<FeaturedProductProps> = ({ product }) => {
           
           {/* Actions */}
           <div className="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
-            <button 
-              onClick={() => navigate(`/products/${slug}`)}
-              className="flex-1 bg-[#0046be] hover:bg-[#003494] text-white py-3 px-6 rounded-lg font-medium transition-colors duration-300"
+            <Link 
+              href={`/products/${slug}`}
+              className="flex-1 bg-[#0046be] hover:bg-[#003494] text-white py-3 px-6 rounded-lg font-medium transition-colors duration-300 text-center"
             >
               Add to Cart
-            </button>
+            </Link>
             <Link 
-              to={`/products/${slug}`}
+              href={`/products/${slug}`}
               className="flex-1 flex items-center justify-center border border-[#0046be] text-[#0046be] hover:bg-blue-50 py-3 px-6 rounded-lg font-medium transition-colors duration-300"
             >
               View Details
@@ -79,4 +91,4 @@ const FeaturedProduct: React.FC<FeaturedProductProps> = ({ product }) => {
   );
 };
 
-export default FeaturedProduct;
+export default FeaturedProduct; 
