@@ -14,9 +14,9 @@ import { useState, useEffect, useMemo } from 'react';
 import type { Product } from '@/types/product';
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default function ProductPage({ params }: ProductPageProps) {

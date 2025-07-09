@@ -11,7 +11,7 @@ import type { CartItem } from '@/utils/cart';
 const CheckoutPage: React.FC = () => {
   const router = useRouter();
   const [cartItem, setCartItem] = useState<CartItem | null>(null);
-  const [currentStep, setCurrentStep] = useState<'shipping' | 'payment'>('shipping');
+  const [currentStep] = useState<'shipping' | 'payment'>('shipping');
   const [shippingData, setShippingData] = useState({
     streetAddress: '',
     city: '',
@@ -86,7 +86,6 @@ const CheckoutPage: React.FC = () => {
     }
   }, [router]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setShippingData(prev => ({ ...prev, [name]: value }));
