@@ -7,6 +7,7 @@ import { ArrowLeft, Check, MapPin } from 'lucide-react';
 import { getCartItem, clearCart } from '@/utils/cart';
 import { preventScrollOnClick } from '@/utils/scrollUtils';
 import type { CartItem } from '@/utils/cart';
+import Image from 'next/image';
 
 const CheckoutPage: React.FC = () => {
   const router = useRouter();
@@ -250,9 +251,11 @@ const CheckoutPage: React.FC = () => {
                 <h2 className="text-2xl font-bold text-gray-900 mb-8">Order Summary</h2>
                 
                 <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-6 p-6 bg-blue-50 rounded-xl border border-blue-100">
-                  <img 
+                  <Image 
                     src={product.images[0]} 
                     alt={product.title}
+                    width={96}
+                    height={96}
                     className="w-24 h-24 object-cover rounded-xl shadow-sm mb-4 sm:mb-0"
                   />
                   <div className="flex-grow">
@@ -430,9 +433,11 @@ const CheckoutPage: React.FC = () => {
                     </button>
 
                     <div className="mt-6 flex flex-col items-center space-y-4">
-                      <img 
+                      <Image 
                         src="/secure-checkout.png" 
                         alt="Secure Checkout" 
+                        width={120}
+                        height={32}
                         className="h-8 w-auto max-w-full object-contain"
                       />
                       <div className="text-sm text-gray-600">

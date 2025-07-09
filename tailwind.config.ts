@@ -24,7 +24,7 @@ const config: Config = {
     },
   },
   plugins: [
-    require('@tailwindcss/line-clamp'),
+    // line-clamp plugin removed; included by default in Tailwind 3.3+
   ],
 }
 export default config 
