@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 export async function GET() {
@@ -39,7 +40,7 @@ export async function GET() {
       messageId: info.messageId,
       message: 'Test email sent successfully'
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending test email:', error);
     return NextResponse.json(
       { 

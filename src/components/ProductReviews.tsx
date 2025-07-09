@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Star, ThumbsUp, CheckCircle2, ChevronDown, X, ZoomIn } from 'lucide-react';
 import type { Review } from '@/types/product';
 
@@ -192,9 +193,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
           {sortedReviews.map((review, index) => (
             <div key={`${review.id}-${index}`} className="p-6">
               <div className="flex items-start gap-4">
-                <img 
+                <Image 
                   src={review.avatar || placeholderAvatar} 
                   alt={review.author}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-full object-cover flex-shrink-0"
                 />
                 <div className="flex-grow">
@@ -239,9 +242,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
                             onClick={() => openImageModal(image)}
                             className="relative group overflow-hidden rounded-lg border border-gray-200 hover:border-[#0046be] transition-colors duration-200"
                           >
-                            <img
+                            <Image
                               src={image}
                               alt={`Review image ${index + 1} by ${review.author}`}
+                              width={80}
+                              height={80}
                               className="w-20 h-20 object-cover group-hover:scale-105 transition-transform duration-200"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 flex items-center justify-center">
@@ -294,9 +299,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
             >
               <X className="h-6 w-6" />
             </button>
-            <img
+            <Image
               src={selectedImage}
               alt="Review image"
+              width={1000}
+              height={1000}
               className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg"
               onClick={e => e.stopPropagation()}
             />

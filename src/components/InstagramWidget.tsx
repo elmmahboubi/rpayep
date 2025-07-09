@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Instagram, ExternalLink } from 'lucide-react';
 
 const InstagramWidget: React.FC = () => {
@@ -10,10 +11,11 @@ const InstagramWidget: React.FC = () => {
           {/* Profile Picture with Instagram Gradient Ring */}
           <div className="w-20 h-20 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 rounded-full p-0.5 flex-shrink-0">
             <div className="w-full h-full bg-white rounded-full overflow-hidden">
-              <img
+              <Image
                 src="https://i.ibb.co/9k8CQzhT/pdp.png"
                 alt="HappyDeel Profile"
-                className="w-full h-full object-cover"
+                width={80}
+                height={80}
               />
             </div>
           </div>

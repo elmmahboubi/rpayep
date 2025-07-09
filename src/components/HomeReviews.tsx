@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Star, CheckCircle2, X, Send } from 'lucide-react';
 import type { Review } from '@/types/product';
 
@@ -126,9 +127,11 @@ const HomeReviews: React.FC<HomeReviewsProps> = ({
               {displayReviews.map((review, index) => (
                 <div key={`${review.id}-${index}`} className="p-6">
                   <div className="flex items-start gap-4">
-                    <img 
+                    <Image 
                       src={review.avatar || placeholderAvatar} 
                       alt={review.author}
+                      width={48}
+                      height={48}
                       className="w-12 h-12 rounded-full object-cover flex-shrink-0"
                     />
                     <div className="flex-grow">

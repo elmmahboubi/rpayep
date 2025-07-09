@@ -6,7 +6,10 @@ export async function GET() {
     const products = await getProducts();
     return NextResponse.json(products);
   } catch (error) {
-    console.error('API Error:', error);
-    return NextResponse.json({ error: 'Failed to load products' }, { status: 500 });
+    console.error('Failed to get products:', error);
+    return NextResponse.json(
+      { error: 'Failed to retrieve products' },
+      { status: 500 }
+    );
   }
 } 
