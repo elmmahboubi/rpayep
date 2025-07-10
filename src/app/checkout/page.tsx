@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Check, MapPin } from 'lucide-react';
+import { ArrowLeft, Check, MapPin, Phone, Trash } from 'lucide-react';
 import { getCartItem, clearCart } from '@/utils/cart';
 import { preventScrollOnClick } from '@/utils/scrollUtils';
 import type { CartItem } from '@/utils/cart';
@@ -247,30 +247,55 @@ const CheckoutPage: React.FC = () => {
 
   if (isRedirecting) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#e0e7ff] via-[#f8fafc] to-[#f0fdfa]">
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-10 border border-gray-100 flex flex-col items-center max-w-md mx-auto transition-all duration-500">
-          <div className="mb-6 flex flex-col items-center">
-            {/* Minimal neutral spinner */}
-            <div className="mb-6">
-              <div className="w-12 h-12 border-4 border-[#0046be]/30 border-t-[#0046be] rounded-full animate-spin"></div>
+      <div className="flex flex-col items-center justify-center bg-gradient-to-br from-[#e0e7ff] via-[#f8fafc] to-[#f0fdfa] px-2 pt-4 min-h-0 sm:pt-16 sm:pb-16">
+        <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 flex flex-col items-center max-w-md w-full mx-auto transition-all duration-500">
+          {/* Blue Verification Icon at Top */}
+          <div className="flex flex-col items-center mb-4">
+            <span className="inline-flex items-center justify-center bg-blue-100 rounded-full p-2 mb-2">
+              <Check className="h-7 w-7 text-[#0046be]" />
+            </span>
+          </div>
+          {/* Title */}
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-2 text-center">Address Confirmed</h2>
+          {/* Subtitle */}
+          <p className="text-lg sm:text-xl text-gray-700 mb-4 text-center">Your order will be shipped to the address below:</p>
+          {/* Address Card */}
+          <div className="w-full max-w-xs bg-blue-50 border border-blue-100 rounded-2xl shadow p-5 mb-4 flex flex-col gap-2">
+            <div className="flex items-center gap-2 mb-1">
+              <MapPin className="h-5 w-5 text-[#0046be]" />
+              <span className="font-semibold text-[#0046be] text-base">Confirmed Shipping Address</span>
             </div>
-            <Image 
-              src="/secure-checkout.png" 
-              alt="SSL Secure Checkout" 
-              width={180}
-              height={32}
-              className="h-7 w-auto max-w-full object-contain mb-4 drop-shadow-lg"
-            />
-            <h2 className="text-2xl font-extrabold text-gray-900 mb-2 text-center tracking-tight">Address Confirmed</h2>
-            <p className="text-gray-700 text-center mb-2 text-lg font-medium">Your order will be sent to this address</p>
-            <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-2 w-full max-w-xs text-sm text-gray-800 shadow-sm">
-              <div className="font-semibold text-[#0046be] mb-1">Confirmed Address</div>
-              <div>{shippingData.streetAddress}</div>
-              <div>{shippingData.city}, {shippingData.state} {shippingData.zipCode}</div>
-              <div>Phone: {selectedCountryCode + shippingData.phoneNumber}</div>
+            <div className="text-gray-800 text-base whitespace-pre-line leading-relaxed">
+              {shippingData.streetAddress && <div>{shippingData.streetAddress}</div>}
+              {shippingData.city && <div>{shippingData.city}</div>}
+              {shippingData.state || shippingData.zipCode ? (
+                <div>{shippingData.state}{shippingData.state && shippingData.zipCode ? ', ' : ''}{shippingData.zipCode}</div>
+              ) : null}
             </div>
-            <p className="text-gray-600 text-center mb-2 text-base">Wait to continue your checkout</p>
-            <p className="text-xs text-gray-400 mt-2">Your information is encrypted and protected by SSL. Please do not close this window.</p>
+            {selectedCountryCode && shippingData.phoneNumber && (
+              <div className="flex items-center gap-2 mt-2">
+                <Phone className="h-5 w-5 text-[#0046be]" />
+                <a href={`tel:${selectedCountryCode}${shippingData.phoneNumber}`} className="text-[#0046be] underline text-base">
+                  {selectedCountryCode} {shippingData.phoneNumber}
+                </a>
+              </div>
+            )}
+          </div>
+          {/* SSL Notice */}
+          <div className="flex items-center gap-2 text-xs text-gray-500 mb-6">
+            <span className="inline-flex items-center justify-center bg-gray-100 rounded-full p-1">
+              <svg className="h-4 w-4 text-[#0046be]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect width="18" height="12" x="3" y="8" rx="2"/><path d="M7 8V6a5 5 0 0 1 10 0v2"/></svg>
+            </span>
+            <span>Your information is secured with SSL.</span>
+          </div>
+          {/* Loading Spinner and Message */}
+          <div className="flex flex-col items-center gap-2 mt-2 mb-6">
+            <div className="w-10 h-10 border-4 border-[#0046be]/30 border-t-[#0046be] rounded-full animate-spin mb-2"></div>
+            <span className="text-base text-gray-700 font-medium">Finalizing your checkout. This won’t take long…</span>
+          </div>
+          {/* Trust Icon Row: Only Secure Checkout */}
+          <div className="w-full flex justify-center mt-4 mb-2">
+            <Image src="/secure-checkout.png" alt="Secure Checkout" width={200} height={32} className="h-8 w-auto max-w-full object-contain" />
           </div>
         </div>
       </div>
@@ -291,52 +316,62 @@ const CheckoutPage: React.FC = () => {
           {currentStep === 'shipping' ? (
             /* Shipping Step - Two Column Layout */
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Left Section - Cart Information */}
-              <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
-                <h2 className="text-2xl font-bold text-gray-900 mb-8">Order Summary</h2>
-                
-                <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-6 p-6 bg-blue-50 rounded-xl border border-blue-100">
+              {/* Order Summary - On top for mobile, right for desktop */}
+              <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100 order-1 lg:order-2">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Order Summary</h2>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
                   <Image 
                     src={product.images[0]} 
                     alt={product.title}
-                    width={96}
-                    height={96}
-                    className="w-24 h-24 object-cover rounded-xl shadow-sm mb-4 sm:mb-0"
+                    width={64}
+                    height={64}
+                    className="w-16 h-16 object-cover rounded-xl shadow-sm mb-2 sm:mb-0"
                   />
-                  <div className="flex-grow">
-                    <h3 className="font-semibold text-gray-900 line-clamp-2 text-lg">{product.title}</h3>
-                    <div className="flex items-center mt-2 space-x-4">
-                      <p className="text-sm text-gray-600 bg-white px-3 py-1 rounded-full inline-block">{product.condition}</p>
-                      <span className="text-sm text-gray-600">Quantity: {cartItem.quantity}</span>
+                  <div className="flex-grow flex flex-col justify-between">
+                    <h3 className="font-semibold text-gray-900 line-clamp-2 text-base mb-1">{product.title}</h3>
+                    <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
+                      <span className="bg-white px-2 py-0.5 rounded-full inline-block">{product.condition}</span>
+                      <span>Qty: {cartItem.quantity}</span>
+                    </div>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="font-bold text-lg text-[#0046be]">${product.price.toFixed(2)}</span>
+                      {/* Trash icon for clear cart (mobile) */}
+                      <button
+                        onClick={handleClearCart}
+                        className="sm:hidden p-2 rounded-full hover:bg-blue-50 text-[#0046be] transition-colors"
+                        aria-label="Clear Cart"
+                      >
+                        <Trash className="h-5 w-5" />
+                      </button>
                     </div>
                   </div>
                 </div>
-
-                <div className="border-t border-gray-200 mt-8 pt-8 space-y-4">
-                  <div className="flex justify-between items-center text-lg">
+                <div className="border-t border-gray-200 mt-4 pt-4 space-y-2 text-sm">
+                  <div className="flex justify-between items-center">
                     <span className="text-gray-600">Subtotal:</span>
                     <span className="font-semibold">${product.price.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between items-center text-lg">
+                  <div className="flex justify-between items-center">
                     <span className="text-gray-600">Shipping:</span>
-                    <span className="font-semibold text-[#0046be] bg-blue-50 px-3 py-1 rounded-full">FREE</span>
+                    <span className="font-semibold text-[#0046be] bg-blue-50 px-2 py-0.5 rounded-full">FREE</span>
                   </div>
-                  <div className="flex justify-between items-center text-2xl font-bold border-t border-gray-200 pt-6">
+                  <div className="flex justify-between items-center text-base font-bold border-t border-gray-200 pt-3">
                     <span>Total:</span>
                     <span className="text-[#0046be]">${product.price.toFixed(2)}</span>
                   </div>
                 </div>
-
+                {/* Trash icon+label for desktop */}
                 <button
                   onClick={handleClearCart}
-                  className="w-full mt-8 px-6 py-3 text-[#0046be] border-2 border-[#0046be] rounded-xl hover:bg-blue-50 hover:text-[#0046be] transition-all duration-300 font-medium"
+                  className="hidden sm:flex items-center justify-center gap-2 w-full mt-4 px-4 py-2 text-[#0046be] border-2 border-[#0046be] rounded-xl hover:bg-blue-50 hover:text-[#0046be] transition-all duration-300 font-medium"
+                  aria-label="Clear Cart"
                 >
-                  Clear Cart
+                  <Trash className="h-5 w-5" />
+                  <span>Clear Cart</span>
                 </button>
               </div>
-
-              {/* Right Section - Shipping Form */}
-              <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+              {/* Shipping Form - Below on mobile, left for desktop */}
+              <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100 order-2 lg:order-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-8">Shipping Address</h2>
                 
                 <form onSubmit={handleContinueToCheckout} className="space-y-6">
