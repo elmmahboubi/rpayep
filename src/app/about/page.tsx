@@ -8,7 +8,7 @@ const AboutPage = () => (
         {/* Main Content */}
         <div className="prose max-w-none text-gray-600">
           <p className="text-lg mb-6">
-            Welcome to HappyDeel, your premier destination for quality electronics and photography equipment. Since our establishment, we've been dedicated to providing photographers and tech enthusiasts with exceptional products at competitive prices.
+            Welcome to HappyDeel, your premier destination for quality electronics and photography equipment. Since our establishment, we&#39;ve been dedicated to providing photographers and tech enthusiasts with exceptional products at competitive prices.
           </p>
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Our Mission</h2>
           <p className="mb-6">

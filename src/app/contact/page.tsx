@@ -54,7 +54,7 @@ export default function ContactPage() {
             <div className="p-6 sm:p-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Contact Us</h1>
               <p className="text-gray-600 mb-8">
-                Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                Have questions? We&#39;d love to hear from you. Send us a message and we&#39;ll respond as soon as possible.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Contact Form */}

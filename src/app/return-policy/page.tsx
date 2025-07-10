@@ -6,7 +6,7 @@ const ReturnPolicyPage = () => (
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Return Policy</h1>
       <div className="prose max-w-none text-gray-600">
         <p className="text-lg mb-6">
-          At HappyDeel, we want you to be completely satisfied with your purchase. If you're not entirely happy with your order, we're here to help.
+          At HappyDeel, we want you to be completely satisfied with your purchase. If you&#39;re not entirely happy with your order, we&#39;re here to help.
         </p>
         <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Return Window</h2>
         <p>

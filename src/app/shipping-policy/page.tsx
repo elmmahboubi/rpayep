@@ -6,7 +6,7 @@ const ShippingPolicyPage = () => (
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Shipping Policy</h1>
       <div className="prose max-w-none text-gray-600">
         <p className="text-lg mb-6">
-          At HappyDeel, we strive to provide fast, reliable shipping services to all our customers. Here's everything you need to know about our shipping policy.
+          At HappyDeel, we strive to provide fast, reliable shipping services to all our customers. Here&#39;s everything you need to know about our shipping policy.
         </p>
         <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Free Shipping</h2>
         <ul className="list-disc pl-6 mt-4 mb-6">
@@ -42,7 +42,7 @@ const ShippingPolicyPage = () => (
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Order Tracking</h2>
         <p className="mb-6">
-          Once your order ships, you'll receive:
+          Once your order ships, you&#39;ll receive:
         </p>
         <ul className="list-disc pl-6 mb-6">
           <li>Shipping confirmation email</li>
@@ -82,7 +82,7 @@ const ShippingPolicyPage = () => (
         <div className="bg-blue-50 p-6 rounded-lg mt-8">
           <h3 className="text-lg font-bold text-gray-900 mb-2">Important Note</h3>
           <p className="text-sm">
-            Shipping times may be affected by customs, weather conditions, or other unforeseen circumstances. We'll keep you updated on any delays affecting your order.
+            Shipping times may be affected by customs, weather conditions, or other unforeseen circumstances. We&#39;ll keep you updated on any delays affecting your order.
           </p>
         </div>
       </div>
