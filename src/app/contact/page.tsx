@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 import { Mail, Phone, MapPin } from 'lucide-react';
@@ -14,7 +14,7 @@ export default function ContactPage() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState('');
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSending(true);
     setError('');
@@ -41,7 +41,7 @@ export default function ContactPage() {
     }
   }
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   }
