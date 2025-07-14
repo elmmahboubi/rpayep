@@ -7,6 +7,7 @@ import InstagramSection from "@/components/InstagramSection";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Script from "next/script";
 import { Suspense } from "react";
+import VisitNotifier from "@/components/VisitNotifier";
 
 export const metadata: Metadata = {
   title: "HappyDeel - Your Trusted Marketplace for Everything.",
@@ -71,6 +72,7 @@ export default function RootLayout({
         <link rel="preload" href="/logosvg.svg" as="image" type="image/svg+xml" />
       </head>
       <body>
+        <VisitNotifier />
         {/* Organization Schema */}
         <Script
           id="organization-schema"
