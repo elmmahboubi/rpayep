@@ -8,34 +8,14 @@ import { ShoppingCart, Menu, X, Search } from 'lucide-react';
 import { getCartCount } from '@/utils/cart';
 import type { Product } from '@/types/product';
 import ClientOnly from './ClientOnly';
+import SearchBar from './SearchBar';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        // Load products from a client-side API route
-        const response = await fetch('/api/products');
-        if (response.ok) {
-          const allProducts = await response.json();
-          setProducts(allProducts);
-        }
-      } catch (error) {
-        console.error('Error loading products:', error);
-      }
-    };
-    loadProducts();
-  }, []);
 
   useEffect(() => {
     const updateCartCount = () => {
@@ -43,7 +23,6 @@ const Header = () => {
         setCartCount(getCartCount());
       }
     };
-
     updateCartCount();
     window.addEventListener('cartUpdated', updateCartCount);
     return () => {
@@ -51,84 +30,14 @@ const Header = () => {
     };
   }, []);
   
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsSearchOpen(false);
-      }
-    };
-  
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      const params = new URLSearchParams(searchParams);
-      params.set('search', searchQuery.trim());
-      router.push(`/?${params.toString()}`);
-      setIsSearchOpen(false);
-      setSearchQuery('');
-      setFilteredProducts([]);
-    }
-  };
-
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    setIsLoading(true);
-
-    if (query.trim() === '') {
-      setFilteredProducts([]);
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      // Use the new search API for better performance
-      const response = await fetch(`/api/products/search?q=${encodeURIComponent(query)}&limit=5`);
-      if (response.ok) {
-        const searchResults = await response.json();
-        setFilteredProducts(searchResults);
-      } else {
-        // Fallback to client-side filtering if API fails
-        const filtered = products.filter(product => 
-          product.title.toLowerCase().includes(query.toLowerCase()) ||
-          product.description.toLowerCase().includes(query.toLowerCase())
-        ).slice(0, 5);
-        setFilteredProducts(filtered);
-      }
-    } catch (error) {
-      console.error('Search error:', error);
-      // Fallback to client-side filtering
-      const filtered = products.filter(product => 
-        product.title.toLowerCase().includes(query.toLowerCase()) ||
-        product.description.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 5);
-      setFilteredProducts(filtered);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleProductSelect = (product: Product) => {
-    router.push(`/products/${product.slug}`);
-    setIsSearchOpen(false);
-    setSearchQuery('');
-    setFilteredProducts([]);
-  };
-
   const handleCartClick = () => {
     if (cartCount > 0) {
       router.push('/checkout');
     }
   };
-
   const handleMobileMenuClose = () => {
     setIsMenuOpen(false);
   };
-
   return (
     <>
       <div className="bg-[#ffef02] text-[#313a4b] py-2">
@@ -136,7 +45,6 @@ const Header = () => {
           Free Shipping for US & Canada Customers
         </div>
       </div>
-
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -150,7 +58,6 @@ const Header = () => {
                 className="w-48"
               />
             </Link>
-
             <nav className="hidden md:flex space-x-8 font-heading">
               <Link href="/" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Home</Link>
               <Link href="/#products" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Products</Link>
@@ -158,69 +65,48 @@ const Header = () => {
               <Link href="/track" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Track Order</Link>
               <Link href="/contact" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Contact Us</Link>
             </nav>
-
-            <div className="hidden md:flex items-center space-x-4">
-              <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-[#313a4b] hover:text-[#0046be] transition-colors duration-300" aria-label="Search products"><Search className="h-5 w-5" /></button>
-              <button onClick={handleCartClick} className="relative text-[#313a4b] hover:text-[#0046be] transition-colors duration-300" aria-label={`Shopping cart ${cartCount > 0 ? `with ${cartCount} items` : '(empty)'}`}>
+            <div className="hidden md:flex items-center space-x-4 relative">
+              <button
+                onClick={() => setIsSearchOpen((v) => !v)}
+                className="text-[#313a4b] hover:text-[#0046be] transition-colors duration-300"
+                aria-label="Search products"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+              <button onClick={handleCartClick} className="relative text-[#313a4b] hover:text-[#0046be] transition-colors duration-300 ml-2" aria-label={`Shopping cart ${cartCount > 0 ? `with ${cartCount} items` : '(empty)'}`}>
                 <ShoppingCart className="h-5 w-5" />
                 <ClientOnly>
                   <span className={`absolute -top-2 -right-2 bg-[#0046be] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transition-opacity duration-300 ${cartCount > 0 ? 'opacity-100' : 'opacity-0'}`}>{cartCount}</span>
                 </ClientOnly>
               </button>
             </div>
-
+            {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-4">
-              <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-[#313a4b] hover:text-[#0046be] transition-colors duration-300" aria-label="Search products"><Search className="h-5 w-5" /></button>
+              <button
+                onClick={() => setIsSearchOpen((v) => !v)}
+                className="text-[#313a4b] hover:text-[#0046be] transition-colors duration-300"
+                aria-label="Search products"
+              >
+                <Search className="h-5 w-5" />
+              </button>
               <button onClick={handleCartClick} className="relative text-[#313a4b] hover:text-[#0046be] transition-colors duration-300" aria-label={`Shopping cart ${cartCount > 0 ? `with ${cartCount} items` : '(empty)'}`}>
-                <ShoppingCart className="h-6 w-6" />
+                <ShoppingCart className="h-5 w-5" />
                 <ClientOnly>
                   <span className={`absolute -top-2 -right-2 bg-[#0046be] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transition-opacity duration-300 ${cartCount > 0 ? 'opacity-100' : 'opacity-0'}`}>{cartCount}</span>
                 </ClientOnly>
               </button>
-              <button className="text-[#313a4b]" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}>
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-[#313a4b] hover:text-[#0046be] transition-colors duration-300"
+                aria-label="Toggle mobile menu"
+              >
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>
+            {/* SearchBar overlay */}
+            <SearchBar open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
           </div>
-
-          {isSearchOpen && (
-            <div className="absolute left-0 right-0 top-full bg-white shadow-lg p-4 border-t" ref={searchRef}>
-              <div className="container mx-auto max-w-3xl">
-                <form onSubmit={handleSearch}>
-                  <div className="relative">
-                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search for products..." className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0046be] focus:border-transparent" autoFocus />
-                    <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                  </div>
-                </form>
-                {searchQuery.trim() !== '' && (
-                  <div className="absolute left-0 right-0 bg-white shadow-lg rounded-lg mt-2 max-h-96 overflow-y-auto">
-                    {isLoading ? (<div className="p-4 text-center text-gray-500">Loading...</div>) : filteredProducts.length > 0 ? (
-                      <div className="divide-y">
-                        {filteredProducts.map((product) => (
-                          <button key={product.id} onClick={() => handleProductSelect(product)} className="w-full text-left p-4 hover:bg-gray-50 flex items-center space-x-4 transition-colors duration-200">
-                            <div className="relative w-16 h-16">
-                              <Image 
-                                src={product.images[0]} 
-                                alt={product.title} 
-                                fill
-                                className="object-cover rounded"
-                                sizes="64px"
-                              />
-                            </div>
-                            <div>
-                              <div className="font-medium text-gray-900">{product.title}</div>
-                              <div className="text-sm text-gray-500">${new Intl.NumberFormat('en-US').format(product.price)}</div>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    ) : (<div className="p-4 text-center text-gray-500">No products found</div>)}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
+          {/* Mobile menu */}
           {isMenuOpen && (
             <div className="md:hidden mt-4 py-4 border-t border-gray-200">
               <nav className="flex flex-col space-y-4 font-heading">
@@ -237,5 +123,4 @@ const Header = () => {
     </>
   );
 };
-
 export default Header; 
