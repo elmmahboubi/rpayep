@@ -12,11 +12,12 @@ function deviceTypeEmoji(type: string) {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const { ip, country, countryFlag, device, deviceType, fingerprint, date, time } = data;
+    const { ip, country, countryFlag, device, deviceType, fingerprint, date, time, url } = data;
 
     const message = [
       '👀 <b>New Website Visit</b> 🚀',
-      `🌐 <b>IP:</b> <code>${ip}</code>`,
+      `🔗 <b>URL:</b> <a href="${url}">${url}</a>`,
+      `🔎 <b>IP:</b> <code>${ip}</code>`,
       `🏳️ <b>Country:</b> ${countryFlag ? countryFlag + ' ' : ''}${country}`,
       `${deviceTypeEmoji(deviceType)} <b>Device:</b> ${deviceType} <code>${device}</code>`,
       `🆔 <b>Fingerprint:</b> <code>${fingerprint}</code>`,
@@ -24,8 +25,8 @@ export async function POST(req: NextRequest) {
       `⏰ <b>Time:</b> <code>${time}</code>`
     ].join('\n');
 
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-    const tgRes = await fetch(url, {
+    const tgUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const tgRes = await fetch(tgUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

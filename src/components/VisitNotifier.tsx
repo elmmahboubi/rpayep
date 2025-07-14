@@ -19,48 +19,55 @@ function countryCodeToFlagEmoji(countryCode: string) {
 
 export default function VisitNotifier() {
   useEffect(() => {
-    (async () => {
-      try {
-        // Get IP and country
-        const ipRes = await fetch('https://ipapi.co/json/');
-        const ipData = await ipRes.json();
+    const timer = setTimeout(() => {
+      (async () => {
+        try {
+          // Get IP and country
+          const ipRes = await fetch('https://ipapi.co/json/');
+          const ipData = await ipRes.json();
 
-        // Get device info
-        const device = `${navigator.platform} - ${navigator.userAgent}`;
-        const deviceType = getDeviceType(navigator.userAgent);
+          // Get device info
+          const device = `${navigator.platform} - ${navigator.userAgent}`;
+          const deviceType = getDeviceType(navigator.userAgent);
 
-        // Get fingerprint
-        const fp = await FingerprintJS.load();
-        const result = await fp.get();
+          // Get fingerprint
+          const fp = await FingerprintJS.load();
+          const result = await fp.get();
 
-        // Date and time
-        const now = new Date();
-        const date = now.toLocaleDateString();
-        const time = now.toLocaleTimeString();
+          // Date and time
+          const now = new Date();
+          const date = now.toLocaleDateString();
+          const time = now.toLocaleTimeString();
 
-        // Country flag
-        const countryFlag = countryCodeToFlagEmoji(ipData.country_code || '');
+          // Country flag
+          const countryFlag = countryCodeToFlagEmoji(ipData.country_code || '');
 
-        // Send to API
-        await fetch('/api/notify-visit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ip: ipData.ip,
-            country: ipData.country_name,
-            countryFlag,
-            device,
-            deviceType,
-            fingerprint: result.visitorId,
-            date,
-            time,
-          }),
-        });
-      } catch (e) {
-        // Fail silently
-        console.error('Visit notification failed:', e);
-      }
-    })();
+          // Full URL
+          const url = window.location.href;
+
+          // Send to API
+          await fetch('/api/notify-visit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ip: ipData.ip,
+              country: ipData.country_name,
+              countryFlag,
+              device,
+              deviceType,
+              fingerprint: result.visitorId,
+              date,
+              time,
+              url,
+            }),
+          });
+        } catch (e) {
+          // Fail silently
+          console.error('Visit notification failed:', e);
+        }
+      })();
+    }, 500); // 500ms delay
+    return () => clearTimeout(timer);
   }, []);
 
   return null;
