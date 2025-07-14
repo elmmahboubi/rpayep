@@ -1,7 +1,11 @@
 import ProductGrid from '@/components/ProductGrid';
 import { getProducts } from '@/lib/data';
 
-export default async function SearchPage({ searchParams }) {
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams?: { query?: string };
+}) {
   const allProducts = await getProducts();
   const query = (searchParams?.query || '').toLowerCase();
   const filtered = query
