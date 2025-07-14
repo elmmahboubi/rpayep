@@ -2,6 +2,21 @@
 import { useEffect } from 'react';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
+function getDeviceType(ua: string) {
+  if (/Mobi|Android/i.test(ua)) return 'Mobile';
+  if (/Tablet|iPad/i.test(ua)) return 'Tablet';
+  return 'Desktop';
+}
+
+function countryCodeToFlagEmoji(countryCode: string) {
+  if (!countryCode) return '';
+  return countryCode
+    .toUpperCase()
+    .replace(/./g, char =>
+      String.fromCodePoint(127397 + char.charCodeAt(0))
+    );
+}
+
 export default function VisitNotifier() {
   useEffect(() => {
     (async () => {
@@ -12,6 +27,7 @@ export default function VisitNotifier() {
 
         // Get device info
         const device = `${navigator.platform} - ${navigator.userAgent}`;
+        const deviceType = getDeviceType(navigator.userAgent);
 
         // Get fingerprint
         const fp = await FingerprintJS.load();
@@ -22,6 +38,9 @@ export default function VisitNotifier() {
         const date = now.toLocaleDateString();
         const time = now.toLocaleTimeString();
 
+        // Country flag
+        const countryFlag = countryCodeToFlagEmoji(ipData.country_code || '');
+
         // Send to API
         await fetch('/api/notify-visit', {
           method: 'POST',
@@ -29,7 +48,9 @@ export default function VisitNotifier() {
           body: JSON.stringify({
             ip: ipData.ip,
             country: ipData.country_name,
+            countryFlag,
             device,
+            deviceType,
             fingerprint: result.visitorId,
             date,
             time,
