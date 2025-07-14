@@ -2,7 +2,6 @@
 
 import { notFound, useRouter } from 'next/navigation';
 import ProductReviews from '@/components/ProductReviews';
-import InstagramWidget from '@/components/InstagramWidget';
 import ShippingInfo from '@/components/ShippingInfo';
 import ClientOnly from '@/components/ClientOnly';
 import RecommendedProducts from '@/components/RecommendedProducts';
@@ -192,17 +191,30 @@ export default function ProductPageClient({ product: initialProduct }: ProductPa
               </div>
 
               <div className="mt-8"><h3 className="text-lg font-semibold text-gray-900 mb-4">Shipping & Delivery</h3><ClientOnly><ShippingInfo /></ClientOnly></div>
-              <div className="mt-8"><h2 className="text-xl font-medium text-gray-900 mb-4">Product Description</h2><p className="text-gray-600 whitespace-pre-line">{description}</p></div>
-              
-              <div className="mt-12 border-t pt-8">
-                <button onClick={() => setShowFAQ(!showFAQ)} className="w-full flex items-center justify-between text-left text-gray-900 hover:text-[#0046be] transition-colors duration-300">
-                  <span className="text-xl font-medium">Frequently Asked Questions</span>
-                  {showFAQ ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-                </button>
-                {showFAQ && <div className="mt-6 space-y-6">{faqItems.map((item, index) => <div key={index} className="border-b border-gray-100 pb-6 last:border-0"><h3 className="font-medium text-gray-900 mb-2">{item.question}</h3><p className="text-gray-600">{item.answer}</p></div>)}</div>}
-              </div>
+              <div className="mt-8"><h2 className="text-xl font-medium text-gray-900 mb-4">Description</h2><p className="text-gray-600 whitespace-pre-line">{description}</p></div>
+            </div>
+          </div>
 
-              <div className="mt-12 border-t pt-8"><h2 className="text-xl font-medium text-gray-900 mb-6 text-center">Follow Us on Instagram</h2><InstagramWidget /></div>
+          {/* FAQ Section - Full Width */}
+          <div className="mt-16 w-full">
+            <div className="bg-gray-50 rounded-xl p-6 sm:p-8">
+              <button onClick={() => setShowFAQ(!showFAQ)} className="w-full flex items-center justify-between text-left text-gray-900 hover:text-[#0046be] transition-colors duration-300">
+                <span className="text-xl font-medium">Frequently Asked Questions</span>
+                <div className="flex items-center space-x-2">
+                  {!showFAQ && <span className="text-sm text-[#0046be] font-medium">({faqItems.length - 1} more questions)</span>}
+                  {showFAQ ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                </div>
+              </button>
+              <div className="mt-6 space-y-6">
+                {faqItems.map((item, index) => (
+                  <div key={index} className={`border-b border-gray-100 pb-6 last:border-0 ${!showFAQ && index > 0 ? 'hidden' : ''}`}>
+                    <h3 className="font-medium text-gray-900 mb-2">{item.question}</h3>
+                    <div className="text-gray-600">
+                      <p>{item.answer}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

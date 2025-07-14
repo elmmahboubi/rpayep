@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ClientHeader from "@/components/ClientHeader";
 import Footer from "@/components/Footer";
+import NewsletterSection from "@/components/NewsletterSection";
+import InstagramSection from "@/components/InstagramSection";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Script from "next/script";
 import { Suspense } from "react";
@@ -130,6 +132,8 @@ export default function RootLayout({
             <main className="flex-grow">
               {children}
             </main>
+            <InstagramSection />
+            <NewsletterSection />
             <Footer />
           </div>
         </ErrorBoundary>
