@@ -139,6 +139,12 @@ export default function RootLayout({
             <Footer />
           </div>
         </ErrorBoundary>
+        
+        {/* Tidio Live Chat Widget */}
+        <Script
+          src="//code.tidio.co/f2nijehl3bgqointq49w7bofzavxnxmm.js"
+          async
+        />
       </body>
     </html>
   );
