@@ -4,7 +4,7 @@ import { CheckCircle, Mail, Clock, Package, ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Thank You for Your Order | HappyDeel',
-  description: 'Your order has been successfully placed. We\'ll process it soon and send you tracking information via email.',
+  description: 'Your order has been successfully placed. We&apos;ll process it soon and send you tracking information via email.',
   robots: {
     index: false,
     follow: false,
@@ -29,7 +29,7 @@ export default function ThankYouPage() {
           
           <p className="text-lg text-gray-600 mb-8 leading-relaxed">
             Your order has been successfully placed and is being processed. 
-            We're excited to get your items ready for shipping!
+            We&apos;re excited to get your items ready for shipping!
           </p>
 
           {/* Next Steps */}
@@ -45,7 +45,7 @@ export default function ThankYouPage() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-medium text-gray-900">Order Processing</h3>
-                  <p className="text-sm text-gray-600">We'll process your order within 24-48 hours</p>
+                  <p className="text-sm text-gray-600">We&apos;ll process your order within 24-48 hours</p>
                 </div>
               </div>
 
@@ -55,7 +55,7 @@ export default function ThankYouPage() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-medium text-gray-900">Email Confirmation</h3>
-                  <p className="text-sm text-gray-600">You'll receive an email with your order tracking number</p>
+                  <p className="text-sm text-gray-600">You&apos;ll receive an email with your order tracking number</p>
                 </div>
               </div>
 
@@ -75,7 +75,7 @@ export default function ThankYouPage() {
           <div className="bg-blue-50 rounded-xl p-6 mb-8">
             <h3 className="font-semibold text-gray-900 mb-2">Need Help?</h3>
             <p className="text-sm text-gray-600 mb-3">
-              If you have any questions about your order, don't hesitate to reach out:
+              If you have any questions about your order, don&apos;t hesitate to reach out:
             </p>
             <div className="space-y-1 text-sm">
               <p className="text-gray-700">
