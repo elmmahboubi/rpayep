@@ -6,8 +6,9 @@ import HomeReviews from '@/components/HomeReviews';
 import { getProducts } from '@/lib/data';
 import { homeReviews, homeReviewsStats } from '@/lib/homeReviews';
 import ScrollToTop from '@/components/ScrollToTop';
+import type { Product } from '@/types/product';
 
-function getRandomProducts(products, count) {
+function getRandomProducts(products: Product[], count: number): Product[] {
   const shuffled = [...products].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }
