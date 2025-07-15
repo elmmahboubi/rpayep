@@ -39,12 +39,12 @@ export default function CookieConsent() {
           <div className="flex-1 text-center sm:text-left">
             <p className="text-sm sm:text-base leading-relaxed">
               By continuing to use this site, you accept our{' '}
-              <Link 
-                href="/cookie-policy" 
-                className="underline hover:text-blue-200 font-medium transition-colors"
+              <a 
+                href="https://www.happydeel.com/cookies" 
+                className="underline hover:text-blue-200 font-medium transition-colors" target="_blank" rel="noopener noreferrer"
               >
                 Cookie Policy
-              </Link>
+              </a>
               . We use cookies to enhance your browsing experience and analyze site traffic.
             </p>
           </div>
