@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import NewsletterSection from "@/components/NewsletterSection";
 import InstagramSection from "@/components/InstagramSection";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import CookieConsent from "@/components/CookieConsent";
 import Script from "next/script";
 import { Suspense } from "react";
 import VisitNotifier from "@/components/VisitNotifier";
@@ -138,6 +139,7 @@ export default function RootLayout({
             <NewsletterSection />
             <Footer />
           </div>
+          <CookieConsent />
         </ErrorBoundary>
         
         {/* Tidio Live Chat Widget */}
