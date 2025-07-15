@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const { device, deviceType, fingerprint, url } = data;
 
-    // Get IP address from headers
-    let ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.ip || '';
+    // Get IP address from headers (no req.ip)
+    let ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '';
     if (!ip || ip === '::1' || ip === '127.0.0.1') ip = '';
 
     // Fetch geo info server-side
