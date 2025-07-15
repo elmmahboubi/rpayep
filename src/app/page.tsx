@@ -7,12 +7,17 @@ import { getProducts } from '@/lib/data';
 import { homeReviews, homeReviewsStats } from '@/lib/homeReviews';
 import ScrollToTop from '@/components/ScrollToTop';
 
+function getRandomProducts(products, count) {
+  const shuffled = [...products].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
 export default async function HomePage() {
   // Fetch all products just once
   const allProducts = await getProducts(); 
   
-  // Derive featured products from the main list
-  const featuredProducts = allProducts.slice(0, 4); 
+  // Pick 4 random featured products
+  const featuredProducts = getRandomProducts(allProducts, 4);
 
   return (
     <>
