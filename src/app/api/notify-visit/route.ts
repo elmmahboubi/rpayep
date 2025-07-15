@@ -27,16 +27,18 @@ export async function POST(req: NextRequest) {
     let ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '';
     if (!ip || ip === '::1' || ip === '127.0.0.1') ip = '';
 
-    // Fetch geo info server-side
+    // Fetch geo info server-side using ipwho.is
     let country = 'Unknown';
     let countryFlag = '';
     try {
       if (ip) {
-        const geoRes = await fetch(`https://ipapi.co/${ip}/json/`, { next: { revalidate: 60 } });
+        const geoRes = await fetch(`https://ipwho.is/${ip}`);
         if (geoRes.ok) {
           const geo = await geoRes.json();
-          country = geo.country_name || 'Unknown';
-          countryFlag = countryCodeToFlagEmoji(geo.country_code || '');
+          if (geo.success) {
+            country = geo.country || 'Unknown';
+            countryFlag = geo.country_code ? countryCodeToFlagEmoji(geo.country_code) : '';
+          }
         }
       }
     } catch (e) {
