@@ -8,24 +8,11 @@ function getDeviceType(ua: string) {
   return 'Desktop';
 }
 
-function countryCodeToFlagEmoji(countryCode: string) {
-  if (!countryCode) return '';
-  return countryCode
-    .toUpperCase()
-    .replace(/./g, char =>
-      String.fromCodePoint(127397 + char.charCodeAt(0))
-    );
-}
-
 export default function VisitNotifier() {
   useEffect(() => {
     const timer = setTimeout(() => {
       (async () => {
         try {
-          // Get IP and country
-          const ipRes = await fetch('https://ipapi.co/json/');
-          const ipData = await ipRes.json();
-
           // Get device info
           const device = `${navigator.platform} - ${navigator.userAgent}`;
           const deviceType = getDeviceType(navigator.userAgent);
@@ -34,30 +21,17 @@ export default function VisitNotifier() {
           const fp = await FingerprintJS.load();
           const result = await fp.get();
 
-          // Date and time
-          const now = new Date();
-          const date = now.toLocaleDateString();
-          const time = now.toLocaleTimeString();
-
-          // Country flag
-          const countryFlag = countryCodeToFlagEmoji(ipData.country_code || '');
-
           // Full URL
           const url = window.location.href;
 
-          // Send to API
+          // Send to API (server will handle IP/geo)
           await fetch('/api/notify-visit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              ip: ipData.ip,
-              country: ipData.country_name,
-              countryFlag,
               device,
               deviceType,
               fingerprint: result.visitorId,
-              date,
-              time,
               url,
             }),
           });

@@ -9,15 +9,49 @@ function deviceTypeEmoji(type: string) {
   return '🖥️';
 }
 
+function countryCodeToFlagEmoji(countryCode: string) {
+  if (!countryCode) return '';
+  return countryCode
+    .toUpperCase()
+    .replace(/./g, char =>
+      String.fromCodePoint(127397 + char.charCodeAt(0))
+    );
+}
+
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const { ip, country, countryFlag, device, deviceType, fingerprint, date, time, url } = data;
+    const { device, deviceType, fingerprint, url } = data;
+
+    // Get IP address from headers
+    let ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.ip || '';
+    if (!ip || ip === '::1' || ip === '127.0.0.1') ip = '';
+
+    // Fetch geo info server-side
+    let country = 'Unknown';
+    let countryFlag = '';
+    try {
+      if (ip) {
+        const geoRes = await fetch(`https://ipapi.co/${ip}/json/`, { next: { revalidate: 60 } });
+        if (geoRes.ok) {
+          const geo = await geoRes.json();
+          country = geo.country_name || 'Unknown';
+          countryFlag = countryCodeToFlagEmoji(geo.country_code || '');
+        }
+      }
+    } catch (e) {
+      // Ignore geo errors, fallback to unknown
+    }
+
+    // Date and time (server-side)
+    const now = new Date();
+    const date = now.toLocaleDateString('en-US');
+    const time = now.toLocaleTimeString('en-US');
 
     const message = [
       '👀 <b>New Website Visit</b> 🚀',
       `🔗 <b>URL:</b> <a href="${url}">${url}</a>`,
-      `🔎 <b>IP:</b> <code>${ip}</code>`,
+      `🔎 <b>IP:</b> <code>${ip || 'Unknown'}</code>`,
       `🏳️ <b>Country:</b> ${countryFlag ? countryFlag + ' ' : ''}${country}`,
       `${deviceTypeEmoji(deviceType)} <b>Device:</b> ${deviceType} <code>${device}</code>`,
       `🆔 <b>Fingerprint:</b> <code>${fingerprint}</code>`,
@@ -26,20 +60,20 @@ export async function POST(req: NextRequest) {
     ].join('\n');
 
     const tgUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-    const tgRes = await fetch(tgUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML',
-        disable_web_page_preview: true,
-      }),
-    });
-
-    if (!tgRes.ok) {
-      // TODO: Add Supabase logging here if desired
-      console.error('Telegram API failed', await tgRes.text());
+    try {
+      await fetch(tgUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: 'HTML',
+          disable_web_page_preview: true,
+        }),
+      });
+    } catch (e) {
+      // Telegram error, log but don't throw
+      console.error('Telegram API failed', e);
     }
 
     return NextResponse.json({ ok: true });
