@@ -92,20 +92,13 @@ export default function ThankYouPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <Link 
               href="/"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#0046be] hover:bg-[#003494] text-white font-medium rounded-lg transition-colors duration-200"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Continue Shopping
-            </Link>
-            
-            <Link 
-              href="/products"
-              className="inline-flex items-center justify-center px-6 py-3 border border-[#0046be] text-[#0046be] hover:bg-blue-50 font-medium rounded-lg transition-colors duration-200"
-            >
-              Browse More Products
             </Link>
           </div>
         </div>
