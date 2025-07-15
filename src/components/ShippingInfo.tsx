@@ -5,7 +5,22 @@ interface ShippingInfoProps {
   className?: string;
 }
 
+function getDeliveryRange() {
+  const today = new Date();
+  const start = new Date(today);
+  const end = new Date(today);
+  start.setDate(today.getDate() + 5);
+  end.setDate(today.getDate() + 8);
+  // If the months are the same, show as "20-23 July", else "30 July - 2 August"
+  if (start.getMonth() === end.getMonth()) {
+    return `${start.getDate()}-${end.getDate()} ${start.toLocaleString('en-US', { month: 'long' })}`;
+  } else {
+    return `${start.getDate()} ${start.toLocaleString('en-US', { month: 'long' })} - ${end.getDate()} ${end.toLocaleString('en-US', { month: 'long' })}`;
+  }
+}
+
 const ShippingInfo: React.FC<ShippingInfoProps> = ({ className = '' }) => {
+  const deliveryRange = getDeliveryRange();
   return (
     <div className={`grid grid-cols-2 gap-4 ${className}`}>
       {/* Shipping Destination */}
@@ -31,7 +46,7 @@ const ShippingInfo: React.FC<ShippingInfoProps> = ({ className = '' }) => {
           <p className="text-sm font-semibold text-gray-900">Estimated delivery:</p>
         </div>
         <div className="ml-10">
-          <p className="text-sm text-gray-700 font-medium">5-14 business days</p>
+          <p className="text-sm text-gray-700 font-medium">get your order by {deliveryRange}</p>
           <p className="text-xs text-gray-500 mt-1">Worldwide shipping available</p>
         </div>
       </div>

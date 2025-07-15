@@ -17,8 +17,6 @@ const FeaturedProduct: React.FC<FeaturedProductProps> = ({ product }) => {
 
   const { slug, title, description, price, rating, reviewCount, images } = product;
 
-
-
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-6xl mx-auto transition-transform duration-300 hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.015]">
       <div className="flex flex-col lg:flex-row">
@@ -45,7 +43,6 @@ const FeaturedProduct: React.FC<FeaturedProductProps> = ({ product }) => {
         <div className="lg:w-1/2 p-6 lg:p-8 flex flex-col">
           <div className="flex-grow">
             <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
-            
             {/* Rating */}
             <div className="mt-2 flex items-center">
               <div className="flex items-center">
@@ -58,17 +55,14 @@ const FeaturedProduct: React.FC<FeaturedProductProps> = ({ product }) => {
               </div>
               <span className="ml-2 text-sm text-gray-600">({reviewCount} reviews)</span>
             </div>
-            
-            {/* Price - FIXED: Use consistent locale formatting */}
+            {/* Price */}
             <div className="mt-4">
               <span className="text-3xl font-bold text-gray-900">${new Intl.NumberFormat('en-US').format(price)}</span>
               <span className="ml-2 text-sm text-gray-500">Free shipping</span>
             </div>
-            
             {/* Description */}
             <p className="mt-4 text-gray-600 line-clamp-3">{description}</p>
           </div>
-          
           {/* Actions */}
           <div className="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <Link 
