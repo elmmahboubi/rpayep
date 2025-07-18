@@ -33,7 +33,7 @@ const ShippingInfo: React.FC<ShippingInfoProps> = ({ className = '' }) => {
         </div>
         <div className="ml-10">
           <p className="text-sm text-gray-700 font-medium">
-          Ships from the USA 🇺🇸 with fast domestic and international delivery.
+          Ships from the USA 🇺🇸 with fast domestic and international delivery — FREE shipping included
           </p>
         </div>
       </div>
@@ -50,17 +50,21 @@ const ShippingInfo: React.FC<ShippingInfoProps> = ({ className = '' }) => {
           <p className="text-xs text-gray-500 mt-1">Worldwide shipping available</p>
         </div>
       </div>
-      {/* Shipping Cost */}
+      {/* Stock / Low Stock Card */}
       <div className="p-4 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl border border-yellow-100 hover:border-yellow-200 transition-all duration-300 hover:shadow-md">
         <div className="flex items-center mb-2">
           <div className="flex items-center justify-center w-8 h-8 bg-yellow-600 rounded-lg mr-2 flex-shrink-0">
-            <DollarSign className="h-4 w-4 text-white" />
+            {/* Stock icon (box) */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M2 7l10-4 10 4" stroke="currentColor" strokeWidth="2" fill="none"/></svg>
           </div>
-          <p className="text-sm font-semibold text-gray-900">Shipping cost:</p>
+          <p className="text-sm font-semibold text-gray-900 flex items-center">
+            In stock
+            <span className="inline-block w-2 h-2 bg-green-500 rounded-full ml-2"></span>
+          </p>
         </div>
         <div className="ml-10">
-          <p className="text-sm font-bold text-green-600">FREE</p>
-          <p className="text-xs text-gray-500 mt-1">No minimum order</p>
+          <p className="text-sm text-gray-700 font-medium">Rare Find</p>
+          <p className="text-xs text-gray-500 mt-1">only 1 remaining</p>
         </div>
       </div>
       {/* Returns */}
