@@ -33,7 +33,7 @@ const ShippingInfo: React.FC<ShippingInfoProps> = ({ className = '' }) => {
         </div>
         <div className="ml-10">
           <p className="text-sm text-gray-700 font-medium">
-          Ships from the USA 🇺🇸 with fast domestic and international delivery — FREE shipping included
+          Ships from the USA 🇺🇸 with fast domestic and international delivery
           </p>
         </div>
       </div>
@@ -47,7 +47,7 @@ const ShippingInfo: React.FC<ShippingInfoProps> = ({ className = '' }) => {
         </div>
         <div className="ml-10">
           <p className="text-sm text-gray-700 font-medium">get your order by {deliveryRange}</p>
-          <p className="text-xs text-gray-500 mt-1">Worldwide shipping available</p>
+          <p className="text-xs text-gray-500 mt-1">FREE shipping available</p>
         </div>
       </div>
       {/* Stock / Low Stock Card */}
