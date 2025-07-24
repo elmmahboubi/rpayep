@@ -1,65 +1,28 @@
 {
-  "title": "DJI Mavic 2 Pro Drone - Gray",
-  "description": "Pre-owned DJI Mavic 2 Pro Drone in gray. Renowned for its Hasselblad camera, 1-inch CMOS sensor, and advanced obstacle sensing. Delivers stunning 4K video and high-resolution photos. Includes remote controller, intelligent flight battery, charger, propellers, and carrying case. Fully tested and in excellent working condition with light cosmetic wear.",
-  "price": 336,
+  "title": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones - Black",
+  "description": "Experience industry-leading noise cancellation with the Sony WH-1000XM5 wireless headphones in black. Enjoy up to 30 hours of battery life, crystal-clear sound, and all-day comfort. These headphones are used but in excellent condition, fully tested and working perfectly. Includes carrying case and charging cable.",
+  "price": 49.99,
   "rating": 4.8,
-  "reviewCount": 2,
+  "reviewCount": 0,
   "inStock": true,
+  "id": "sony-wh-1000xm5-wireless-noise-cancelling-headphones-black",
   "slug": "sony-wh-1000xm5-wireless-noise-cancelling-headphones-black",
   "images": [
-    "/products/dji-mavic-2-pro-drone-gray/img1.webp",
-    "/products/dji-mavic-2-pro-drone-gray/img2.webp",
-    "/products/dji-mavic-2-pro-drone-gray/img3.webp",
-    "/products/dji-mavic-2-pro-drone-gray/img4.webp",
-    "/products/dji-mavic-2-pro-drone-gray/img5.webp",
-    "/products/dji-mavic-2-pro-drone-gray/img6.webp",
-    "/products/dji-mavic-2-pro-drone-gray/img7.webp",
-    "/products/dji-mavic-2-pro-drone-gray/img8.webp"
+    "/products/sony-wh-1000xm5-wireless-noise-cancelling-headphones-black/img1.webp",
+    "/products/sony-wh-1000xm5-wireless-noise-cancelling-headphones-black/img2.webp",
+    "/products/sony-wh-1000xm5-wireless-noise-cancelling-headphones-black/img3.webp",
+    "/products/sony-wh-1000xm5-wireless-noise-cancelling-headphones-black/img4.webp",
+    "/products/sony-wh-1000xm5-wireless-noise-cancelling-headphones-black/img5.webp"
   ],
-  "condition": "Used",
-  "category": "Drones",
-  "brand": "DJI",
+  "condition": "Used - Excellent Condition",
+  "category": "Headphones",
+  "brand": "Sony",
   "payeeEmail": "happyemilliano@gmail.com",
   "currency": "USD",
-  "checkoutLink": "https://buymeacoffee.com/annahoffman/extras/checkout/9f2e68d0-1155-4170-80f8-3531abe6e267",
-  "reviews": [
-    {
-      "id": "review-1",
-      "author": "David Thompson",
-      "avatar": "https://i.ibb.co/ZzZm6PT2/avatars-000652081152-ddbg70-t500x500.jpg",
-      "rating": 5,
-      "date": "2024-01-20",
-      "title": "Best drone I've ever flown",
-      "content": "The DJI Mavic 2 Pro is absolutely incredible. The camera quality is stunning and the flight controls are super smooth. Obstacle avoidance works flawlessly and battery life is impressive. Worth every penny for aerial photography!",
-      "helpful": 18,
-      "verified": true,
-      "location": "Seattle, WA",
-      "purchaseDate": "January 2024",
-      "images": [
-        "https://i.ibb.co/vCq3Gd7h/s-l1600-18.webp",
-        "https://i.ibb.co/pvtFkydF/s-l1600-19.webp"
-      ]
-    },
-    {
-      "id": "review-2",
-      "author": "Lisa Park",
-      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face&auto=format&q=80",
-      "rating": 4,
-      "date": "2024-01-12",
-      "title": "Great drone, minor wear",
-      "content": "Excellent image quality and flight performance as expected from DJI. There's some light wear on the body but nothing major. It works perfectly and the carrying case is a nice touch. Great value for a premium drone.",
-      "helpful": 9,
-      "verified": true,
-      "location": "Chicago, IL",
-      "purchaseDate": "January 2024",
-      "images": [
-        "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop&auto=format&q=80"
-      ]
-    }
-  ],
+  "checkoutLink": "https://buymeacoffee.com/annahoffman/extras/checkout/9f2e57da-36c9-4575-a7f7-b28d2ac7db45",
   "meta": {
-    "title": "DJI Mavic 2 Pro Drone - Gray - HappyDeel",
-    "description": "Pre-owned DJI Mavic 2 Pro Drone in gray. Renowned for its Hasselblad camera, 1-inch CMOS sensor, and advanced obstacle sensing. Includes remote controller, intelligent flight battery, charger, propellers, and carrying case.",
-    "keywords": "DJI Mavic 2 Pro, drone, 4K camera drone, used drone, DJI, aerial photography, HappyDeel"
+    "title": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones - Black | HappyDeel",
+    "description": "Shop Sony WH-1000XM5 wireless noise cancelling headphones in black. Used, excellent condition, fast shipping, secure checkout at HappyDeel.",
+    "keywords": "Sony, WH-1000XM5, wireless headphones, noise cancelling, black, used, headphones, HappyDeel"
   }
 }

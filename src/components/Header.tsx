@@ -58,14 +58,14 @@ const Header = () => {
                 className="w-48"
               />
             </Link>
-            <nav className="hidden md:flex space-x-8 font-heading">
+            <nav className="hidden lg:flex space-x-8 font-heading">
               <Link href="/" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Home</Link>
               <Link href="/#products" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Products</Link>
               <Link href="/#featured" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Featured</Link>
               <Link href="/track" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Track Order</Link>
               <Link href="/contact" className="text-[#313a4b] hover:text-[#0046be] font-medium transition-colors duration-300">Contact Us</Link>
             </nav>
-            <div className="hidden md:flex items-center space-x-4 relative">
+            <div className="hidden lg:flex items-center space-x-4 relative">
               <button
                 onClick={() => setIsSearchOpen((v) => !v)}
                 className="text-[#313a4b] hover:text-[#0046be] transition-colors duration-300"
@@ -81,7 +81,7 @@ const Header = () => {
               </button>
             </div>
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-4">
+            <div className="lg:hidden flex items-center space-x-4">
               <button
                 onClick={() => setIsSearchOpen((v) => !v)}
                 className="text-[#313a4b] hover:text-[#0046be] transition-colors duration-300"

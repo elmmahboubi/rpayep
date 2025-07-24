@@ -1,9 +1,102 @@
 {
+  "id": "canon-powershot-g7-x-mark-ii-digital-camera-20-1mp-4-2x-zoom-black",
   "title": "Canon PowerShot G7 X Mark II Digital Camera – 20.1MP, 4.2x Zoom, Black",
   "description": "Canon PowerShot G7 X Mark II Digital Camera in Black with 20.1MP sensor and 4.2x optical zoom. This premium compact camera is used but fully operational and functions as intended. May show some signs of cosmetic wear, but is in excellent working condition.\n\nKey Features:\n- Condition: Used, fully functional, may have minor cosmetic wear\n- Brand: Canon\n- Model: PowerShot G7 X Mark II\n- Color: Black\n- Sensor: 20.1 Megapixel 1-inch CMOS\n- Optical Zoom: 4.2x (24-100mm equivalent)\n- Aperture: f/1.8-2.8\n- ISO Range: 125-12800\n- Video: Full HD 1080p at 60fps\n- Display: 3-inch tilting touchscreen LCD\n- Connectivity: Wi-Fi and NFC\n- Battery: NB-13L lithium-ion\n- Dimensions: 4.1 x 2.4 x 1.6 inches\n- Weight: 11.2 oz\n\nPerfect for travel photography, vlogging, and everyday shooting. Features advanced autofocus, manual controls, and excellent low-light performance. Fast shipping and secure checkout at HappyDeel.",
   "price": 218.75,
   "rating": 4.7,
-  "reviewCount": 5,
+  "reviewCount": 6,
+  "reviews": [
+    {
+      "id": "review-1",
+      "author": "Emily S.",
+      "avatar": "https://i.ibb.co/4w8W5qG8/icon-7797704-640.png",
+      "rating": 5,
+      "date": "2025-05-01",
+      "title": "Great camera for students!",
+      "content": "I'm a college student and needed a good camera for my photography class. The G7X Mark II turned out great! It works like new, the lens and sensor are super clean, and I saved a lot of money buying used.",
+      "helpful": 12,
+      "verified": true,
+      "location": "Boston, MA",
+      "purchaseDate": "April 2025",
+      "images": [
+        "https://i.ibb.co/fY6cBbQj/755d8fa2-0cff-4cc7-bb4e-44dd0bd34196.jpg"
+      ]
+    },
+    {
+      "id": "review-2",
+      "author": "Mike T.",
+      "avatar": "https://i.ibb.co/8gfgy6ZF/f1b0fa6f5600c401894fcd7e6e4834b5.jpg",
+      "rating": 5,
+      "date": "2025-04-18",
+      "title": "Why buy new?",
+      "content": "Honestly, why bother buying a new one? This camera is fully functional, looks almost new, and the pictures are sharp. I checked the lens and sensor, both are spotless. Very happy with my purchase.",
+      "helpful": 9,
+      "verified": true,
+      "location": "San Diego, CA",
+      "purchaseDate": "March 2025",
+      "images": []
+    },
+    {
+      "id": "review-3",
+      "author": "Sara L.",
+      "avatar": "https://i.ibb.co/4w8W5qG8/icon-7797704-640.png",
+      "rating": 4,
+      "date": "2025-03-22",
+      "title": "Perfect for hobbyists",
+      "content": "I'm just getting into photography as a hobby and this G7X is perfect. It was clean and ready to use out of the box. Saved a bunch compared to buying new.",
+      "helpful": 7,
+      "verified": true,
+      "location": "Austin, TX",
+      "purchaseDate": "March 2025",
+      "images": [
+        "https://i.ibb.co/JFrp7ZqQ/72573ccbf809410d9e5c8d0519daf6f9.jpg"
+      ]
+    },
+    {
+      "id": "review-4",
+      "author": "David R.",
+      "avatar": "https://randomuser.me/api/portraits/men/41.jpg",
+      "rating": 5,
+      "date": "2025-03-10",
+      "title": "Like new, works perfectly",
+      "content": "The camera arrived fast and works perfectly. The lens and sensor are clean, and I can't tell it's used. Great deal for the price.",
+      "helpful": 10,
+      "verified": true,
+      "location": "Chicago, IL",
+      "purchaseDate": "February 2025",
+      "images": []
+    },
+    {
+      "id": "review-5",
+      "author": "Anna P.",
+      "avatar": "https://i.ibb.co/4w8W5qG8/icon-7797704-640.png",
+      "rating": 5,
+      "date": "2025-02-28",
+      "title": "Best value for money",
+      "content": "I was worried about buying used, but this G7X Mark II is just like new. Clean lens, no scratches, and takes amazing photos. Saved a lot compared to a new one.",
+      "helpful": 8,
+      "verified": true,
+      "location": "Seattle, WA",
+      "purchaseDate": "February 2025",
+      "images": []
+    },
+    {
+      "id": "review-6",
+      "author": "Chris M.",
+      "avatar": "https://i.ibb.co/4w8W5qG8/icon-7797704-640.png",
+      "rating": 4,
+      "date": "2025-02-15",
+      "title": "Good for vlogging",
+      "content": "Bought this for my YouTube channel. The camera is in great shape, lens and sensor are clean, and it works just as expected. No need to spend extra on a new one.",
+      "helpful": 6,
+      "verified": true,
+      "location": "New York, NY",
+      "purchaseDate": "January 2025",
+      "images": [
+        "https://i.ibb.co/zT2xY3Qc/Screen-Shot-2025-07-24-at-21-37-19.jpg"
+      ]
+    }
+  ],
   "inStock": true,
   "slug": "canon-powershot-g7-x-mark-ii-digital-camera-20-1mp-4-2x-zoom-black",
   "images": [

@@ -6,8 +6,8 @@ import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
 const Footer = () => {
   return (
     <footer className="bg-[#313a4b] text-gray-300">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           <div>
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <Image 

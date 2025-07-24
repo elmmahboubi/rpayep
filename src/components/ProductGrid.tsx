@@ -94,9 +94,9 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
 
   return (
     <div id="products" ref={productsRef} className="py-12 bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-start gap-8">
-          <div className={`md:w-64 flex-shrink-0 ${filterOpen ? 'block' : 'hidden md:block'}`}>
+          <div className={`w-full md:w-64 lg:w-80 flex-shrink-0 ${filterOpen ? 'block' : 'hidden md:block'}`}>
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h3 className="font-medium text-lg mb-4">Filters</h3>
               
@@ -169,7 +169,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {paginatedProducts.map(product => (<ProductCard key={product.id} product={product} />))}
                 </div>
 
@@ -177,7 +177,26 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
                   <div className="mt-8 flex justify-center">
                     <div className="flex space-x-2">
                       {[...Array(totalPages)].map((_, i) => (
-                        <button key={i} onClick={() => setCurrentPage(i + 1)} className={`px-4 py-2 rounded-lg transition-colors duration-300 ${ currentPage === i + 1 ? 'bg-[#0046be] text-white' : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-[#0046be] border border-gray-300' }`}>
+                        <button
+                          key={i}
+                          onClick={() => {
+                            setCurrentPage(i + 1);
+                            if (productsRef.current) {
+                              const headerHeight = 120; // Adjust if your header height is different
+                              const elementPosition = productsRef.current.getBoundingClientRect().top;
+                              const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                              window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth',
+                              });
+                            }
+                          }}
+                          className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
+                            currentPage === i + 1
+                              ? 'bg-[#0046be] text-white'
+                              : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-[#0046be] border border-gray-300'
+                          }`}
+                        >
                           {i + 1}
                         </button>
                       ))}
