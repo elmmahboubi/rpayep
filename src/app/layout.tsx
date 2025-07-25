@@ -147,6 +147,23 @@ export default function RootLayout({
           src="//code.tidio.co/f2nijehl3bgqointq49w7bofzavxnxmm.js"
           async
         />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-820YBJWJCY"
+          strategy="afterInteractive"
+          async
+        />
+        <Script
+          id="gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-820YBJWJCY');
+            `,
+          }}
+        />
       </body>
     </html>
   );

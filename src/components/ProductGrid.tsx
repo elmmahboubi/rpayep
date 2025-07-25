@@ -20,6 +20,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
+  const [showAllBrands, setShowAllBrands] = useState(false);
+  const [showAllConditions, setShowAllConditions] = useState(false);
   
   const productsRef = useRef<HTMLDivElement>(null);
 
@@ -111,24 +113,42 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
               <div className="mb-6">
                 <h4 className="font-medium mb-2">Brands</h4>
                 <div className="space-y-2">
-                  {brands.map(brand => (
+                  {(showAllBrands ? brands : brands.slice(0, 10)).map(brand => (
                     <label key={brand} className="flex items-center">
                       <input type="checkbox" checked={selectedBrands.includes(brand)} onChange={(e) => setSelectedBrands(e.target.checked ? [...selectedBrands, brand] : selectedBrands.filter(b => b !== brand))} className="mr-2 text-[#0046be] focus:ring-[#0046be]" />
                       {brand}
                     </label>
                   ))}
+                  {brands.length > 10 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAllBrands(v => !v)}
+                      className="mt-2 px-3 py-1 rounded-lg bg-[#f3f6fa] text-[#0046be] border border-[#0046be] hover:bg-[#e6f0fa] transition-colors duration-200 text-sm font-medium w-full"
+                    >
+                      {showAllBrands ? 'Show less brands' : `Show all brands (${brands.length})`}
+                    </button>
+                  )}
                 </div>
               </div>
 
               <div className="mb-6">
                 <h4 className="font-medium mb-2">Condition</h4>
                 <div className="space-y-2">
-                  {conditions.map(condition => (
+                  {(showAllConditions ? conditions : conditions.slice(0, 10)).map(condition => (
                     <label key={condition} className="flex items-center">
                       <input type="checkbox" checked={selectedConditions.includes(condition)} onChange={(e) => setSelectedConditions(e.target.checked ? [...selectedConditions, condition] : selectedConditions.filter(c => c !== condition))} className="mr-2 text-[#0046be] focus:ring-[#0046be]" />
                       {condition}
                     </label>
                   ))}
+                  {conditions.length > 10 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAllConditions(v => !v)}
+                      className="mt-2 px-3 py-1 rounded-lg bg-[#f3f6fa] text-[#0046be] border border-[#0046be] hover:bg-[#e6f0fa] transition-colors duration-200 text-sm font-medium w-full"
+                    >
+                      {showAllConditions ? 'Show less conditions' : `Show all conditions (${conditions.length})`}
+                    </button>
+                  )}
                 </div>
               </div>
 
